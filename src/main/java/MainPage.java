@@ -16,8 +16,10 @@ public class MainPage extends Application {
 	public void start(Stage stage) throws Exception {
 		FXMLLoader fl = new FXMLLoader(getClass().getResource("/basic.fxml"));
 		Scene s = new Scene(fl.load(), 300, 400);
+
 		MainPageController cont = fl.getController();
-		s.setOnKeyPressed(cont::setImage);
+		s.setOnKeyPressed(cont::update);
+
 		stage.setResizable(false);
 		stage.setScene(s);
 		stage.show();
