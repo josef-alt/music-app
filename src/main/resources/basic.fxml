@@ -108,9 +108,9 @@
       </HBox>
       <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
         <buttons>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="prev" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="pause" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="next" />
+            <Button fx:id="prev_button" onAction="#handlePrevButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="prev" />
+            <Button fx:id="pause_button" onAction="#handlePauseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="pause" />
+            <Button fx:id="next_button" onAction="#handleNextButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="next" />
         </buttons>
       </ButtonBar>
   </children>
