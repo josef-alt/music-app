@@ -18,7 +18,6 @@ public class MainPage extends Application {
 		Scene s = new Scene(fl.load(), 300, 400);
 
 		MainPageController cont = fl.getController();
-		s.setOnKeyPressed(cont::update);
 
 		stage.setResizable(false);
 		stage.setScene(s);
