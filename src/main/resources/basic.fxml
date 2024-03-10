@@ -99,9 +99,9 @@
          <children>
             <VBox>
                <children>
-                  <Label maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="song" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="10.0" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="artist" textAlignment="CENTER" />
-                  <Label maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="album" textAlignment="CENTER" />
+                  <Label fx:id="song_name" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="song" textAlignment="CENTER" />
+                  <Label fx:id="artist_name" layoutX="10.0" layoutY="10.0" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="artist" textAlignment="CENTER" />
+                  <Label fx:id="album_name" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="album" textAlignment="CENTER" />
                </children>
             </VBox>
          </children>
