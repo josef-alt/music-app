@@ -19,7 +19,12 @@
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
       <version>20.0.2</version>
-    </dependency>  
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+      <version>20.0.2</version>
+    </dependency>
   </dependencies>
   
   <build>
