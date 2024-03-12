@@ -40,11 +40,11 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:controller="controllers.MainPageController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -87,7 +87,7 @@
     </MenuBar>
       <HBox alignment="CENTER" fillHeight="false" nodeOrientation="LEFT_TO_RIGHT">
          <children>
-            <MediaView fx:id="album_art" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="album_art" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
       <HBox alignment="CENTER" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
@@ -103,9 +103,9 @@
       </HBox>
       <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
         <buttons>
-            <Button fx:id="prev_button" onAction="#handlePrevButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="prev" />
-            <Button fx:id="pause_button" onAction="#handlePauseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="pause" />
-            <Button fx:id="next_button" onAction="#handleNextButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="next" />
+            <Button fx:id="prev_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="prev" />
+            <Button fx:id="pause_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="pause" />
+            <Button fx:id="next_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="next" />
         </buttons>
       </ButtonBar>
   </children>
