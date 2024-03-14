@@ -6,6 +6,8 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 
+import javax.imageio.*;
+
 import org.jaudiotagger.audio.*;
 import org.jaudiotagger.audio.exceptions.*;
 import org.jaudiotagger.tag.*;
@@ -61,14 +63,16 @@ public class MainPageController {
 	}
 
 	private ImageView play_icon, prev_icon, next_icon;
-
+	private Image play, pause;
 	@FXML
 	public void initialize() {
 		paused = true;
 
-		prev_icon = new ImageView(new Image("C:\\Users\\Josef\\Desktop\\prev-50.png"));
-		play_icon = new ImageView(new Image("C:\\Users\\Josef\\Desktop\\play-50.png"));
-		next_icon = new ImageView(new Image("C:\\Users\\Josef\\Desktop\\next-50.png"));
+		play = new Image(getClass().getResourceAsStream("/img/play-50.png"));
+		pause = new Image(getClass().getResourceAsStream("/img/pause-50.png"));
+		prev_icon = new ImageView(new Image(getClass().getResourceAsStream("/img/prev-50.png")));
+		play_icon = new ImageView(play);
+		next_icon = new ImageView(new Image(getClass().getResourceAsStream("/img/next-50.png")));
 
 		prev_button.setStyle("-fx-background-color: transparent;");
 		prev_button.setGraphic(prev_icon);
@@ -180,6 +184,12 @@ public class MainPageController {
 				player.pause();
 				paused = true;
 			}
+		}
+
+		if (paused) {
+			play_icon.setImage(play);
+		} else {
+			play_icon.setImage(pause);
 		}
 	}
 
