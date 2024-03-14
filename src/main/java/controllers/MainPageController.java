@@ -6,7 +6,9 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 
-import javax.imageio.*;
+import org.jaudiotagger.audio.*;
+import org.jaudiotagger.audio.exceptions.*;
+import org.jaudiotagger.tag.*;
 
 import javafx.beans.binding.*;
 import javafx.collections.*;
@@ -32,7 +34,7 @@ public class MainPageController {
 
 	private final Stage currentStage;
 	private MediaPlayer player;
-	private Media mediaElement;
+	private File currentFile;
 	private boolean paused;
 
 	public MainPageController() {
@@ -84,7 +86,8 @@ public class MainPageController {
 		// not really important for now, just proof of concept for my own sanity
 		song_name.setText(next.substring(next.lastIndexOf('\\') + 1));
 
-		mediaElement = new Media(new File(next).toURI().toString());
+		currentFile = new File(next);
+		Media mediaElement = new Media(currentFile.toURI().toString());
 		if (player != null)
 			player.dispose();
 		player = new MediaPlayer(mediaElement);
@@ -97,8 +100,36 @@ public class MainPageController {
 	}
 
 	private void setAlbumArt() {
-		Image image = new Image(getClass().getResourceAsStream("/img/cd.png"));
-		album_art.setImage(image);
+		try {
+			AudioFile af = AudioFileIO.read(currentFile);
+			Tag tag = af.getTag();
+
+			if (tag.hasField(FieldKey.ALBUM)) {
+				album_name.setText(tag.getFirst(FieldKey.ALBUM));
+			}
+
+			Image image;
+			if (tag.hasField(FieldKey.COVER_ART)) {
+				image = new Image(new ByteArrayInputStream(tag.getFirstArtwork().getBinaryData()), 250, 250, false,
+						false);
+			} else {
+				image = new Image(getClass().getResourceAsStream("/img/cd.png"));
+			}
+			album_art.setImage(image);
+
+			if (tag.hasField(FieldKey.ARTIST)) {
+				artist_name.setText(tag.getFirst(FieldKey.ARTIST));
+			}
+
+			if (tag.hasField(FieldKey.TITLE)) {
+				song_name.setText(tag.getFirst(FieldKey.TITLE));
+			}
+
+		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException
+				| InvalidAudioFrameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
