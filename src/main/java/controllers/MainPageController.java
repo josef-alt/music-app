@@ -10,6 +10,7 @@ import org.jaudiotagger.audio.*;
 import org.jaudiotagger.audio.exceptions.*;
 import org.jaudiotagger.tag.*;
 
+import javafx.application.*;
 import javafx.beans.binding.*;
 import javafx.collections.*;
 import javafx.event.*;
@@ -31,6 +32,9 @@ public class MainPageController {
 
 	@FXML
 	private Button prev_button, pause_button, next_button;
+
+	@FXML
+	private MenuItem quit_button;
 
 	private final Stage currentStage;
 	private MediaPlayer player;
@@ -56,9 +60,23 @@ public class MainPageController {
 		currentStage.showAndWait();
 	}
 
+	private ImageView play_icon, prev_icon, next_icon;
+
 	@FXML
 	public void initialize() {
 		paused = true;
+
+		prev_icon = new ImageView(new Image("C:\\Users\\Josef\\Desktop\\prev-50.png"));
+		play_icon = new ImageView(new Image("C:\\Users\\Josef\\Desktop\\play-50.png"));
+		next_icon = new ImageView(new Image("C:\\Users\\Josef\\Desktop\\next-50.png"));
+
+		prev_button.setStyle("-fx-background-color: transparent;");
+		prev_button.setGraphic(prev_icon);
+		pause_button.setStyle("-fx-background-color: transparent;");
+		pause_button.setGraphic(play_icon);
+		next_button.setStyle("-fx-background-color: transparent;");
+		next_button.setGraphic(next_icon);
+
 		prev_button.setOnAction(event -> {
 			handlePrevButton(event);
 		});
@@ -67,6 +85,10 @@ public class MainPageController {
 		});
 		next_button.setOnAction(event -> {
 			handleNextButton(event);
+		});
+
+		quit_button.setOnAction(event -> {
+			quit();
 		});
 	}
 
@@ -96,10 +118,10 @@ public class MainPageController {
 		if (paused)
 			player.pause();
 
-		setAlbumArt();
+		setTrackInformation();
 	}
 
-	private void setAlbumArt() {
+	private void setTrackInformation() {
 		try {
 			AudioFile af = AudioFileIO.read(currentFile);
 			Tag tag = af.getTag();
@@ -165,5 +187,16 @@ public class MainPageController {
 	public void handleNextButton(ActionEvent e) {
 		System.out.println("next");
 		update(1);
+	}
+
+	private void quit() {
+		System.out.println("quitting");
+		if (player != null) {
+			if (player.getStatus() == Status.PLAYING) {
+				player.stop();
+			}
+		}
+
+		currentStage.close();
 	}
 }

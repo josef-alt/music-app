@@ -41,6 +41,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -51,17 +52,16 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Openâ€¦" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+            <MenuItem mnemonicParsing="false" text="Open" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Close" />
             <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save Asâ€¦" />
+            <MenuItem mnemonicParsing="false" text="Save As" />
             <MenuItem mnemonicParsing="false" text="Revert" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferencesâ€¦" />
+            <MenuItem mnemonicParsing="false" text="Preferences" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem fx:id="quit_button" mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
@@ -80,7 +80,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <MenuItem mnemonicParsing="false" text="About Music App" />
           </items>
         </Menu>
       </menus>
@@ -91,21 +91,21 @@
          </children>
       </HBox>
       <HBox alignment="CENTER" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
-         <children>
-            <VBox>
-               <children>
-                  <Label fx:id="song_name" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="song" textAlignment="CENTER" />
-                  <Label fx:id="artist_name" layoutX="10.0" layoutY="10.0" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="artist" textAlignment="CENTER" />
-                  <Label fx:id="album_name" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="album" textAlignment="CENTER" />
-               </children>
-            </VBox>
-         </children>
+        <children>
+          <VBox>
+            <children>
+              <Label fx:id="song_name" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="song" textAlignment="CENTER" />
+              <Label fx:id="artist_name" layoutX="10.0" layoutY="10.0" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="artist" textAlignment="CENTER" />
+              <Label fx:id="album_name" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="album" textAlignment="CENTER" />
+            </children>
+          </VBox>
+        </children>
       </HBox>
-      <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0">
+      <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="300.0">
         <buttons>
-            <Button fx:id="prev_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="prev" />
-            <Button fx:id="pause_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="pause" />
-            <Button fx:id="next_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="next" />
+          <Button fx:id="prev_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>           
+          <Button fx:id="pause_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>                          
+          <Button fx:id="next_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>
         </buttons>
       </ButtonBar>
   </children>
