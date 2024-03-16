@@ -40,12 +40,13 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefWidth="300.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -101,12 +102,18 @@
           </VBox>
         </children>
       </HBox>
+      <HBox alignment="CENTER">
+        <Slider maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25" prefWidth="250" />
+      </HBox>
       <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="300.0">
         <buttons>
           <Button fx:id="prev_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>           
           <Button fx:id="pause_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>                          
           <Button fx:id="next_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>
         </buttons>
+        <padding>
+          <Insets bottom="10.0" />
+        </padding>
       </ButtonBar>
   </children>
 </VBox>
