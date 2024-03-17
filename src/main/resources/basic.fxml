@@ -105,14 +105,14 @@
       <HBox alignment="CENTER">
         <Slider maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25" prefWidth="250" />
       </HBox>
-      <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="300.0">
+      <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="300.0">
         <buttons>
           <Button fx:id="prev_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>           
           <Button fx:id="pause_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>                          
           <Button fx:id="next_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"/>
         </buttons>
         <padding>
-          <Insets bottom="10.0" />
+          <Insets bottom="15.0" top="10.0" />
         </padding>
       </ButtonBar>
   </children>
