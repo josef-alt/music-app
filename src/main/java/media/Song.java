@@ -27,10 +27,9 @@ public class Song {
 	private Image cover;
 	private File source;
 	
-	private final Image DEFAULT_ALBUM_COVER;
+	private static final Image DEFAULT_ALBUM_COVER = new Image(Song.class.getResourceAsStream("/img/cd.png"));;
 
 	public Song(File source) {
-		DEFAULT_ALBUM_COVER = new Image(getClass().getResourceAsStream("/img/cd.png"));
 		this.source = source;
 		loadTags();
 	}
@@ -109,5 +108,13 @@ public class Song {
 	 */
 	public Image getCover() {
 		return hasCover() ? cover : DEFAULT_ALBUM_COVER;
+	}
+
+	public File getFile() {
+		return source;
+	}
+
+	public String toString() {
+		return String.format("%s - %s", title, album);
 	}
 }
