@@ -26,6 +26,7 @@ import javafx.scene.media.*;
 import javafx.scene.media.MediaPlayer.*;
 import javafx.stage.*;
 import media.*;
+import util.*;
 
 public class MainPageController {
 	@FXML
@@ -39,6 +40,9 @@ public class MainPageController {
 
 	@FXML
 	private MenuItem quit_button;
+
+	@FXML
+	private Menu themes_picker;
 
 	private final Stage currentStage;
 	private final Player player;
@@ -61,7 +65,7 @@ public class MainPageController {
 			currentScene.getStylesheets().add(getClass().getResource("/themes/basic_config.css").toString());
 
 			// configure color scheme - should not alter layout
-			currentScene.getStylesheets().add(getClass().getResource("/themes/1500.css").toString());
+			currentScene.getStylesheets().add(Resources.getStyleSheet("default").toString());
 
 			currentStage.setScene(currentScene);
 
@@ -87,13 +91,16 @@ public class MainPageController {
 	 * Configures button handlers and loads icons.
 	 */
 	public void initialize() {
-		// load required resources
-		play = new Image(getClass().getResourceAsStream("/img/50/play.png"));
-		pause = new Image(getClass().getResourceAsStream("/img/50/pause.png"));
+		// prepare alternative themes
+		loadThemes();
 
-		prev_icon = new ImageView(new Image(getClass().getResourceAsStream("/img/50/prev.png")));
+		// load required resources
+		play = Resources.getImage("/img/50/play.png");
+		pause = Resources.getImage("/img/50/pause.png");
+
+		prev_icon = new ImageView(Resources.getImage("/img/50/prev.png"));
 		play_icon = new ImageView(play);
-		next_icon = new ImageView(new Image(getClass().getResourceAsStream("/img/50/next.png")));
+		next_icon = new ImageView(Resources.getImage("/img/50/next.png"));
 
 		// set up icons
 		prev_button.setGraphic(prev_icon);
@@ -120,12 +127,34 @@ public class MainPageController {
 	}
 
 	/**
+	 * Attempts to load installed themes from resources
+	 */
+	private void loadThemes() {
+		String[] themes = Resources.loadThemes();
+
+		for (String dir : themes) {
+			MenuItem item = new MenuItem(dir);
+			item.setOnAction(event -> {
+				if (currentStage.getScene().getStylesheets().size() > 1) {
+					currentStage.getScene().getStylesheets().remove(1);
+				}
+				currentStage.getScene().getStylesheets().add(Resources.getStyleSheet(dir));
+			});
+			themes_picker.getItems().add(item);
+		}
+	}
+
+	/**
 	 * Update track information in user interface.
 	 */
 	private void setTrackInformation() {
 		System.out.println("event " + player.getSong());
 
 		Song currentlyPlaying = player.getSong();
+		if (currentlyPlaying == null) {
+			return;
+		}
+
 		if (currentlyPlaying.hasAlbum()) {
 			album_name.setText(currentlyPlaying.getAlbum());
 		}
