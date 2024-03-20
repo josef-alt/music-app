@@ -48,6 +48,8 @@ public class MainPageController {
 	private final Player player;
 
 	private Preferences userSettings;
+	private TrackInformationUpdater trackInfo;
+	private ControlsUpdater controls;
 
 	public MainPageController() {
 		currentStage = new Stage();
@@ -65,14 +67,9 @@ public class MainPageController {
 			currentScene.getStylesheets().add(getClass().getResource("/themes/basic_config.css").toString());
 
 			// configure color scheme - should not alter layout
-			currentScene.getStylesheets().add(Resources.getStyleSheet("default").toString());
+			currentScene.getStylesheets().add(ResourceManager.getStyleSheet("default").toString());
 
 			currentStage.setScene(currentScene);
-
-			// ensure that the first track is displayed properly
-			setTrackInformation();
-
-			System.out.println("finished constructor");
 		} catch (IOException e) {
 			System.err.println("Failed to load fxml");
 			e.printStackTrace();
@@ -83,24 +80,26 @@ public class MainPageController {
 		currentStage.showAndWait();
 	}
 
-	private ImageView play_icon, prev_icon, next_icon;
-	private Image play, pause;
-
-	@FXML
 	/**
 	 * Configures button handlers and loads icons.
 	 */
+	@FXML
 	public void initialize() {
 		// prepare alternative themes
 		loadThemes();
 
 		// load required resources
-		play = Resources.getImage("/img/50/play.png");
-		pause = Resources.getImage("/img/50/pause.png");
+		ImageView play_icon = new ImageView();
+		ImageView prev_icon = new ImageView(ResourceManager.getImage("/themes/default/prev.png"));
+		ImageView next_icon = new ImageView(ResourceManager.getImage("/themes/default/next.png"));
 
-		prev_icon = new ImageView(Resources.getImage("/img/50/prev.png"));
-		play_icon = new ImageView(play);
-		next_icon = new ImageView(Resources.getImage("/img/50/next.png"));
+		controls = new ControlsUpdater(prev_icon, play_icon, next_icon);
+		controls.setPlayIcon(ResourceManager.getImage("/themes/default/play.png"));
+		controls.setPauseIcon(ResourceManager.getImage("/themes/default/pause.png"));
+		controls.togglePause(true);
+
+		trackInfo = new TrackInformationUpdater(album_art, artist_name, album_name, song_name);
+		trackInfo.setTrackInformation(player.getSong());
 
 		// set up icons
 		prev_button.setGraphic(prev_icon);
@@ -109,18 +108,11 @@ public class MainPageController {
 
 		// configure controls
 		prev_button.setOnAction(event -> player.prevSong());
-		pause_button.setOnAction(event -> {
-			player.pause();
-			if (player.isPaused()) {
-				play_icon.setImage(play);
-			} else {
-				play_icon.setImage(pause);
-			}
-		});
+		pause_button.setOnAction(event -> controls.togglePause(player.pause()));
 		next_button.setOnAction(event -> player.nextSong());
 
 		// update user interface
-		player.addEvent(() -> setTrackInformation());
+		player.addEvent(() -> trackInfo.setTrackInformation(player.getSong()));
 
 		// exit safely
 		quit_button.setOnAction(event -> quit());
@@ -130,45 +122,13 @@ public class MainPageController {
 	 * Attempts to load installed themes from resources
 	 */
 	private void loadThemes() {
-		String[] themes = Resources.loadThemes();
+		String[] themes = ResourceManager.loadThemes();
 
 		for (String dir : themes) {
 			MenuItem item = new MenuItem(dir);
-			item.setOnAction(event -> {
-				if (currentStage.getScene().getStylesheets().size() > 1) {
-					currentStage.getScene().getStylesheets().remove(1);
-				}
-				currentStage.getScene().getStylesheets().add(Resources.getStyleSheet(dir));
-			});
+			item.setOnAction(event -> controls.setTheme(dir));
 			themes_picker.getItems().add(item);
 		}
-	}
-
-	/**
-	 * Update track information in user interface.
-	 */
-	private void setTrackInformation() {
-		System.out.println("event " + player.getSong());
-
-		Song currentlyPlaying = player.getSong();
-		if (currentlyPlaying == null) {
-			return;
-		}
-
-		if (currentlyPlaying.hasAlbum()) {
-			album_name.setText(currentlyPlaying.getAlbum());
-		}
-
-		if (currentlyPlaying.hasArtist()) {
-			artist_name.setText(currentlyPlaying.getArtist());
-		}
-
-		if (currentlyPlaying.hasTitle()) {
-			song_name.setText(currentlyPlaying.getTitle());
-		}
-
-		// no check because it should never be null
-		album_art.setImage(currentlyPlaying.getCover());
 	}
 
 	/**
