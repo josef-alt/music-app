@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;;
+import javafx.scene.media.MediaPlayer.Status;
 
 /**
  * Handles all operations associated with playing audio files.
@@ -95,10 +95,9 @@ public class Player {
 	 * transitions.
 	 * TODO - rename?
 	 */
-	public void pause() {
+	public boolean pause() {
 		if (mediaPlayer == null) {
 			System.err.println("Cannot play/pause with no player active");
-			return;
 		}
 		if (mediaPlayer.getStatus() == Status.READY) {
 			mediaPlayer.play();
@@ -110,6 +109,7 @@ public class Player {
 			mediaPlayer.pause();
 			paused = true;
 		}
+		return paused;
 	}
 
 	public void resume() {
