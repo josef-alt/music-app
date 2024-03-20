@@ -80,9 +80,6 @@ public class MainPageController {
 	 */
 	@FXML
 	public void initialize() {
-		// prepare alternative themes
-		loadThemes();
-
 		// load required resources
 		ImageView play_icon = new ImageView();
 		ImageView prev_icon = new ImageView(ResourceManager.getImage("/themes/default/prev.png"));
@@ -92,6 +89,9 @@ public class MainPageController {
 		controls.setPlayIcon(ResourceManager.getImage("/themes/default/play.png"));
 		controls.setPauseIcon(ResourceManager.getImage("/themes/default/pause.png"));
 		controls.togglePause(true);
+
+		// prepare alternative themes
+		controls.loadThemes(themes_picker);
 
 		trackInfo = new TrackInformationUpdater(album_art, artist_name, album_name, song_name);
 		trackInfo.setTrackInformation(player.getSong());
@@ -111,19 +111,6 @@ public class MainPageController {
 
 		// exit safely
 		quit_button.setOnAction(event -> quit());
-	}
-
-	/**
-	 * Attempts to load installed themes from resources
-	 */
-	private void loadThemes() {
-		String[] themes = ResourceManager.loadThemes();
-
-		for (String dir : themes) {
-			MenuItem item = new MenuItem(dir);
-			item.setOnAction(event -> controls.setTheme(dir));
-			themes_picker.getItems().add(item);
-		}
 	}
 
 	/**

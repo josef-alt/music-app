@@ -1,7 +1,7 @@
 package controllers;
 
 import javafx.scene.Scene;
-
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -27,6 +27,19 @@ public class ControlsUpdater {
 
 	public void setPauseIcon(Image icon) {
 		this.pause_icon = icon;
+	}
+
+	/**
+	 * Attempts to load installed themes from resources
+	 */
+	public void loadThemes(Menu themes_picker) {
+		String[] themes = ResourceManager.loadThemes();
+
+		for (String dir : themes) {
+			MenuItem item = new MenuItem(dir);
+			item.setOnAction(event -> setTheme(dir));
+			themes_picker.getItems().add(item);
+		}
 	}
 
 	/**
