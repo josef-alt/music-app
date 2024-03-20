@@ -1,32 +1,27 @@
 package controllers;
 
-import java.io.*;
-import java.net.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.prefs.*;
-import java.util.stream.*;
+import java.io.IOException;
 
-import javax.imageio.*;
+import java.util.prefs.Preferences;
 
-import org.jaudiotagger.audio.*;
-import org.jaudiotagger.audio.exceptions.*;
-import org.jaudiotagger.tag.*;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 
-import javafx.application.*;
-import javafx.beans.binding.*;
-import javafx.collections.*;
-import javafx.event.*;
-import javafx.fxml.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.*;
-import javafx.scene.media.*;
-import javafx.scene.media.MediaPlayer.*;
-import javafx.stage.*;
-import media.*;
-import util.*;
+import javafx.scene.Scene;
+
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+
+import javafx.stage.Stage;
+
+import media.Player;
+
+import util.ResourceManager;
 
 public class MainPageController {
 	@FXML
