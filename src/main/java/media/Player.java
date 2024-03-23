@@ -1,6 +1,6 @@
 package media;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 
 import javafx.scene.media.Media;
@@ -20,11 +20,15 @@ public class Player {
 	private int songIndex;
 	private int libraryLength;
 
+	// TODO decide whether to keep this or not
 	public Player() {
-		paused = true;
-		library = new Library(".");
-		libraryLength = library.getNumberOfTracks();
+		this.paused = true;
+		setDirectory(new File("."));
+	}
 
+	public void setDirectory(File dir) {
+		this.library = new Library(dir.toPath());
+		this.libraryLength = library.getNumberOfTracks();
 		if (libraryLength > 0) {
 			System.out.println("Successfully loaded:");
 			System.out.println(library.toString());
@@ -98,6 +102,7 @@ public class Player {
 	public boolean pause() {
 		if (mediaPlayer == null) {
 			System.err.println("Cannot play/pause with no player active");
+			return false;
 		}
 		if (mediaPlayer.getStatus() == Status.READY) {
 			mediaPlayer.play();

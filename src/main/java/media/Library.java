@@ -7,8 +7,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
 import java.util.Arrays;
+import java.util.stream.*;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * Contains everything necessary for managing the music library.
@@ -43,8 +43,13 @@ public class Library {
 	 * Filters out unsupported types
 	 */
 	private void loadFiles() throws IOException {
-		this.files = Files.list(directory).filter(matcher::matches).map(Path::toFile).map(Song::new)
+		if (Files.isDirectory(directory)) {
+			this.files = Files.list(directory).filter(matcher::matches).map(Path::toFile).map(Song::new)
 				.toArray(Song[]::new);
+		} else if (Files.isRegularFile(directory)) {
+			this.files = Stream.of(directory).filter(matcher::matches).map(Path::toFile).map(Song::new)
+					.toArray(Song[]::new);
+		}
 	}
 
 	public int getNumberOfTracks() {
@@ -59,6 +64,6 @@ public class Library {
 		String list = Arrays.stream(files).map(Song::toString)
 				.collect(Collectors.joining(", ", "{", "}"));
 
-		return String.format("%s has %d files: %s", directory.toString(), files.length, list);
+		return String.format("%s has %d files: %s", directory.toAbsolutePath().toString(), files.length, list);
 	}
 }
