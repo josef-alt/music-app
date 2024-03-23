@@ -146,6 +146,7 @@ public class MainPageController {
 
 		// exit safely
 		quit_button.setOnAction(event -> quit());
+		currentStage.setOnCloseRequest(event -> quit());
 	}
 
 	/**
