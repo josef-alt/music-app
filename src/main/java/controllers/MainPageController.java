@@ -1,7 +1,6 @@
 package controllers;
 
-import java.io.IOException;
-
+import java.io.*;
 import java.util.prefs.Preferences;
 
 import javafx.fxml.FXMLLoader;
@@ -16,10 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import javafx.scene.image.ImageView;
+import javafx.stage.*;
+import javafx.stage.FileChooser.*;
 import javafx.scene.image.Image;
-
-import javafx.stage.Stage;
-
 import media.Player;
 
 import util.ResourceManager;
@@ -35,7 +33,7 @@ public class MainPageController {
 	private Button prev_button, pause_button, next_button;
 
 	@FXML
-	private MenuItem quit_button;
+	private MenuItem quit_button, load_directory, load_file;
 
 	@FXML
 	private Menu themes_picker;
@@ -44,7 +42,7 @@ public class MainPageController {
 	private final Player player;
 
 	private Preferences userSettings;
-	private String startupTheme;
+	private String startupTheme, currentDirectory;
 	private TrackInformationUpdater trackInfo;
 	private ControlsUpdater controls;
 
@@ -54,12 +52,16 @@ public class MainPageController {
 		currentStage.setTitle("Music App");
 		currentStage.getIcons().add(ResourceManager.getImage("/img/large/play.png"));
 
-		player = new Player();
 		userSettings = Preferences.userRoot().node(getClass().getName());
 		startupTheme = userSettings.get("user-theme", "default");
+		currentDirectory = userSettings.get("active-directory", "no directory set");
+		player = new Player();
+		if (!currentDirectory.equals("no directory set")) {
+			player.setDirectory(new File(currentDirectory));
+		}
 
 		System.out.println("starting with theme: " + startupTheme);
-
+		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/basic.fxml"));
 			loader.setController(this);
@@ -120,8 +122,38 @@ public class MainPageController {
 		// update user interface
 		player.addEvent(() -> trackInfo.setTrackInformation(player.getSong()));
 
+		load_file.setOnAction(event -> {
+			FileChooser picker = new FileChooser();
+
+			File picked = picker.showOpenDialog(currentStage);
+			if (picked != null && picked.exists()) {
+				System.out.println("loading file");
+				player.setDirectory(picked);
+				currentDirectory = picked.getAbsolutePath();
+			}
+		});
+
+		load_directory.setOnAction(event -> {
+			DirectoryChooser picker = new DirectoryChooser();
+
+			File picked = picker.showDialog(currentStage);
+			if (picked != null && picked.exists()) {
+				System.out.println("loading directory");
+				player.setDirectory(picked);
+				currentDirectory = picked.getAbsolutePath();
+			}
+		});
+
 		// exit safely
 		quit_button.setOnAction(event -> quit());
+	}
+
+	/**
+	 * Ensure preferences are up to date
+	 */
+	private void writePreferences() {
+		userSettings.put("user-theme", startupTheme);
+		userSettings.put("active-directory", currentDirectory);
 	}
 
 	/**
@@ -129,7 +161,7 @@ public class MainPageController {
 	 */
 	private void quit() {
 		System.out.println("quitting");
-		userSettings.put("user-theme", startupTheme);
+		writePreferences();
 		player.quit();
 		currentStage.close();
 	}
