@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="275.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+  	<Label text="Hello, and welcome to Music App!">
+      <font>
+	    <Font name="Segoe UI Bold" size="16" />
+      </font>
+  	</Label>
+  	
+	<Label />
+	<Label wrapText="true" text="This application was made in an attempt to learn some new things and make a simple music player.">
+		<font>
+			<Font name="Segoe UI" size="14" />
+		</font>
+	</Label>
+	
+	<Label />
+	<Label wrapText="true" text="This is a feature-light music player written in Java intended to provide an alternative to bloated, over-engineered players.">
+	  <font>
+	    <Font name="Segoe UI" size="14" />
+	  </font>
+	</Label>
+	
+	<Label />
+	<Label text="It is presented as is, and without guarantee.">
+	  <font>
+	    <Font name="Segoe UI" size="14" />
+	  </font>
+	</Label>
+  </children>
+</VBox>
