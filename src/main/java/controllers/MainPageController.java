@@ -4,22 +4,19 @@ import java.io.*;
 import java.util.prefs.Preferences;
 
 import javafx.fxml.FXMLLoader;
+import javafx.beans.value.*;
 import javafx.event.*;
 import javafx.fxml.FXML;
 
 import javafx.scene.Scene;
-
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Menu;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.*;
 import javafx.stage.FileChooser.*;
 import javafx.scene.image.Image;
-import media.Player;
 
+import media.Player;
+import pages.*;
 import util.ResourceManager;
 
 public class MainPageController {
@@ -33,7 +30,7 @@ public class MainPageController {
 	private Button prev_button, pause_button, next_button;
 
 	@FXML
-	private MenuItem quit_button, load_directory, load_file;
+	private MenuItem quit_button, load_directory, load_file, about_button;
 
 	@FXML
 	private Menu themes_picker;
@@ -63,7 +60,7 @@ public class MainPageController {
 		System.out.println("starting with theme: " + startupTheme);
 		
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/basic.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/basic.fxml"));
 			loader.setController(this);
 
 			Scene currentScene = new Scene(loader.load());
@@ -95,16 +92,13 @@ public class MainPageController {
 		ImageView prev_icon = new ImageView(ResourceManager.getImage("/themes/" + startupTheme + "/prev.png"));
 		ImageView next_icon = new ImageView(ResourceManager.getImage("/themes/" + startupTheme + "/next.png"));
 
-		controls = new ControlsUpdater(prev_icon, play_icon, next_icon);
+		controls = new ControlsUpdater(prev_icon, play_icon, next_icon, startupTheme);
 		controls.setPlayIcon(ResourceManager.getImage("/themes/" + startupTheme + "/play.png"));
 		controls.setPauseIcon(ResourceManager.getImage("/themes/" + startupTheme + "/pause.png"));
 		controls.togglePause(true);
 
 		// prepare alternative themes
 		controls.loadThemes(themes_picker);
-		controls.addEvent(() -> {
-			userSettings.put("user-theme", controls.getTheme());
-		});
 
 		trackInfo = new TrackInformationUpdater(album_art, artist_name, album_name, song_name);
 		trackInfo.setTrackInformation(player.getSong());
@@ -144,6 +138,8 @@ public class MainPageController {
 			}
 		});
 
+		about_button.setOnAction(event -> new AboutPage(currentStage));
+
 		// exit safely
 		quit_button.setOnAction(event -> quit());
 		currentStage.setOnCloseRequest(event -> quit());
@@ -153,7 +149,7 @@ public class MainPageController {
 	 * Ensure preferences are up to date
 	 */
 	private void writePreferences() {
-		userSettings.put("user-theme", startupTheme);
+		userSettings.put("user-theme", controls.getTheme());
 		userSettings.put("active-directory", currentDirectory);
 	}
 

@@ -17,16 +17,13 @@ public class ControlsUpdater {
 
 	private Image play_icon, pause_icon;
 
-	private ArrayList<Runnable> events;
-
 	private String activeTheme;
 
-	public ControlsUpdater(ImageView prev_button, ImageView play_pause, ImageView next_button) {
+	public ControlsUpdater(ImageView prev_button, ImageView play_pause, ImageView next_button, String active) {
 		this.prev_button = prev_button;
 		this.play_pause = play_pause;
 		this.next_button = next_button;
-
-		events = new ArrayList<>();
+		this.activeTheme = active;
 	}
 
 	public void setPlayIcon(Image icon) {
@@ -77,15 +74,10 @@ public class ControlsUpdater {
 		togglePause(paused);
 
 		activeTheme = theme;
-		events.forEach(Runnable::run);
 	}
 
 	public String getTheme() {
 		return activeTheme;
-	}
-
-	public void addEvent(Runnable event) {
-		events.add(event);
 	}
 
 	/**
