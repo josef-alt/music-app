@@ -65,7 +65,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About Music App" />
+            <MenuItem fx:id="about_button" mnemonicParsing="false" text="About Music App" />
           </items>
         </Menu>
       </menus>
