@@ -20,7 +20,7 @@ public class Library {
 	private Path directory;
 
 	// only supporting m4a files for now
-	private static final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**.m4a");
+	private static final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**.{m4a,mp3,wav}");
 
 	public Library(String dir) {
 		this(Path.of(dir));
