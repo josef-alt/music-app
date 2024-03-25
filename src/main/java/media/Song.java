@@ -3,6 +3,7 @@ package media;
 import java.io.File;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.logging.*;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -13,8 +14,10 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.id3.*;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.*;
 
 /**
  * Contains extracted file information for each song to make Library
@@ -26,14 +29,22 @@ public class Song {
 	private String artist;
 	private Image cover;
 	private File source;
-	
+	private int duration;
+
 	private static final Image DEFAULT_ALBUM_COVER = new Image(Song.class.getResourceAsStream("/img/cd.png"));;
+	static {
+		// https://stackoverflow.com/q/50778442
+		Logger[] pin = new Logger[] { Logger.getLogger("org.jaudiotagger") };
+
+		for (Logger l : pin)
+			l.setLevel(Level.OFF);
+	}
 
 	public Song(File source) {
 		this.source = source;
 		loadTags();
 	}
-	
+
 	/**
 	 * Attempts to populate Song fields from source metadata
 	 */
@@ -58,18 +69,18 @@ public class Song {
 			if (tag.hasField(FieldKey.TITLE)) {
 				title = tag.getFirst(FieldKey.TITLE);
 			}
+
+			duration = af.getAudioHeader().getTrackLength();
 		}
 
 		// TODO exception handling
-		catch(IOException | CannotReadException e) {
+		catch (IOException | CannotReadException e) {
 			System.err.println("Failed to read file");
 			e.printStackTrace();
-		}
-		catch (TagException | ReadOnlyFileException e) {
+		} catch (TagException | ReadOnlyFileException e) {
 			System.err.println("Failed to read tags");
 			e.printStackTrace();
-		}
-		catch (InvalidAudioFrameException e) {
+		} catch (InvalidAudioFrameException e) {
 			e.printStackTrace();
 		}
 	}
@@ -112,6 +123,10 @@ public class Song {
 
 	public File getFile() {
 		return source;
+	}
+
+	public int getDuration() {
+		return duration;
 	}
 
 	public String toString() {
