@@ -3,9 +3,12 @@ package media;
 import java.io.*;
 import java.util.ArrayList;
 
+import javafx.beans.property.*;
+import javafx.beans.value.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.util.*;
 
 /**
  * Handles all operations associated with playing audio files.
@@ -121,14 +124,22 @@ public class Player {
 		mediaPlayer.play();
 	}
 
-	private ArrayList<Runnable> events = new ArrayList<>();
+	public void seek(double time) {
+		mediaPlayer.seek(Duration.seconds(time));
+	}
 
-	public void addEvent(Runnable e) {
-		events.add(e);
+	public void addTimeListener(ChangeListener<? super Duration> r) {
+		mediaPlayer.currentTimeProperty().addListener(r);
+	}
+
+	private ArrayList<Runnable> listeners = new ArrayList<>();
+
+	public void addListener(Runnable e) {
+		listeners.add(e);
 	}
 
 	private void notifyListeners() {
-		for (Runnable event : events) {
+		for (Runnable event : listeners) {
 			event.run();
 		}
 	}
