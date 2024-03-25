@@ -6,7 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javafx.util.*;
+import media.*;
 import util.ResourceManager;
 
 /**
@@ -18,6 +19,10 @@ public class ControlsUpdater {
 	private Image play_icon, pause_icon;
 
 	private String activeTheme;
+
+	private boolean sliderUpdateInProgress = false;
+
+	private double sliderNewVal = 0;
 
 	public ControlsUpdater(ImageView prev_button, ImageView play_pause, ImageView next_button, String active) {
 		this.prev_button = prev_button;
@@ -93,5 +98,54 @@ public class ControlsUpdater {
 		} else {
 			play_pause.setImage(pause_icon);
 		}
+	}
+
+	// user for slider tooltip display
+	private int current_mins = 0, current_secs = 0;
+
+	/**
+	 * Configure listeners to form link between slider and player
+	 */
+	public void configureSlider(Slider time_slider, Player player) {
+		time_slider.setMax(player.getSong().getDuration());
+		time_slider.setMin(0);
+
+		int total_mins = (int) (time_slider.getMax() / 60);
+		int total_secs = (int) (time_slider.getMax() - 60 * total_mins);
+
+		Tooltip indicator = new Tooltip(
+				String.format("%d:%02d / %d:%02d", 0, 0, total_mins, total_secs));
+		indicator.setShowDelay(Duration.seconds(0.5));
+		time_slider.setTooltip(indicator);
+
+		// automatic slider increment
+		player.addTimeListener((obs, old_val, new_val) -> {
+			if (!sliderUpdateInProgress) {
+				time_slider.setValue(new_val.toSeconds());
+				current_mins = (int) (time_slider.getValue() / 60);
+				current_secs = (int) (time_slider.getValue() - 60 * current_mins);
+				indicator.setText(
+						String.format("%d:%02d / %d:%02d", current_mins, current_secs, total_mins, total_secs));
+			}
+		});
+
+		time_slider.valueChangingProperty().addListener((obs, old_progress, new_progress) -> {
+			sliderUpdateInProgress = new_progress;
+			if (!sliderUpdateInProgress) {
+				player.seek(sliderNewVal);
+			}
+		});
+
+		// user led slider increment
+		time_slider.valueProperty().addListener((obs, old_time, new_time) -> {
+			if (sliderUpdateInProgress) {
+				sliderNewVal = new_time.intValue();
+			} else {
+				int change = Math.abs(new_time.intValue() - old_time.intValue());
+				if (change > 10) {
+					player.seek(new_time.intValue());
+				}
+			}
+		});
 	}
 }

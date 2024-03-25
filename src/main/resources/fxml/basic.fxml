@@ -87,7 +87,7 @@
         </children>
       </HBox>
       <HBox alignment="CENTER">
-        <Slider maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25" prefWidth="250" />
+        <Slider fx:id="time_slider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25" prefWidth="250" />
       </HBox>
       <ButtonBar buttonOrder="U+L_HE+FBIX_NCYOA_R" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="300.0">
         <buttons>
