@@ -22,7 +22,7 @@ public class ControlsUpdater {
 
 	private boolean sliderUpdateInProgress = false;
 
-	private double sliderNewVal = 0;
+	private double sliderNewVal = Double.NEGATIVE_INFINITY;
 
 	public ControlsUpdater(ImageView prev_button, ImageView play_pause, ImageView next_button, String active) {
 		this.prev_button = prev_button;
@@ -131,18 +131,18 @@ public class ControlsUpdater {
 
 		time_slider.valueChangingProperty().addListener((obs, old_progress, new_progress) -> {
 			sliderUpdateInProgress = new_progress;
-			if (!sliderUpdateInProgress) {
+			if (!sliderUpdateInProgress && sliderNewVal != Double.NEGATIVE_INFINITY) {
 				player.seek(sliderNewVal);
 			}
 		});
 
 		// user led slider increment
 		time_slider.valueProperty().addListener((obs, old_time, new_time) -> {
-			if (sliderUpdateInProgress) {
-				sliderNewVal = new_time.intValue();
-			} else {
-				int change = Math.abs(new_time.intValue() - old_time.intValue());
-				if (change > 10) {
+			int change = Math.abs(new_time.intValue() - old_time.intValue());
+			if (change > 10) {
+				if (sliderUpdateInProgress) {
+					sliderNewVal = new_time.intValue();
+				} else {
 					player.seek(new_time.intValue());
 				}
 			}
