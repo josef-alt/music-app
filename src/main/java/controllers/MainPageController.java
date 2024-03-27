@@ -13,9 +13,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.*;
 import javafx.stage.FileChooser.*;
+import javafx.util.*;
+import media.*;
 import javafx.scene.image.Image;
-
-import media.Player;
 import pages.*;
 import util.ResourceManager;
 
@@ -28,6 +28,9 @@ public class MainPageController {
 
 	@FXML
 	private Button prev_button, pause_button, next_button;
+
+	@FXML
+	private Slider time_slider;
 
 	@FXML
 	private MenuItem quit_button, load_directory, load_file, about_button;
@@ -52,11 +55,11 @@ public class MainPageController {
 		userSettings = Preferences.userRoot().node(getClass().getName());
 		startupTheme = userSettings.get("user-theme", "default");
 		currentDirectory = userSettings.get("active-directory", "no directory set");
+
 		player = new Player();
 		if (!currentDirectory.equals("no directory set")) {
 			player.setDirectory(new File(currentDirectory));
 		}
-
 		System.out.println("starting with theme: " + startupTheme);
 		
 		try {
@@ -115,6 +118,7 @@ public class MainPageController {
 
 		// update user interface
 		player.addEvent(() -> trackInfo.setTrackInformation(player.getSong()));
+		player.addListener(() -> controls.configureSlider(time_slider, player));
 
 		load_file.setOnAction(event -> {
 			FileChooser picker = new FileChooser();
