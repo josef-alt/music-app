@@ -34,7 +34,7 @@ public class Player {
 		this.libraryLength = library.getNumberOfTracks();
 		if (libraryLength > 0) {
 			System.out.println("Successfully loaded:");
-			System.out.println(library.toString());
+			// System.out.println(library.toString());
 
 			songIndex = -1;
 			nextSong();
