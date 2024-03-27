@@ -57,9 +57,6 @@ public class MainPageController {
 		currentDirectory = userSettings.get("active-directory", "no directory set");
 
 		player = new Player();
-		if (!currentDirectory.equals("no directory set")) {
-			player.setDirectory(new File(currentDirectory));
-		}
 		System.out.println("starting with theme: " + startupTheme);
 		
 		try {
@@ -78,6 +75,10 @@ public class MainPageController {
 		} catch (IOException e) {
 			System.err.println("Failed to load fxml");
 			e.printStackTrace();
+		}
+
+		if (!currentDirectory.equals("no directory set")) {
+			player.setDirectory(new File(currentDirectory));
 		}
 	}
 
@@ -103,9 +104,6 @@ public class MainPageController {
 		// prepare alternative themes
 		controls.loadThemes(themes_picker);
 
-		trackInfo = new TrackInformationUpdater(album_art, artist_name, album_name, song_name);
-		trackInfo.setTrackInformation(player.getSong());
-
 		// set up icons
 		prev_button.setGraphic(prev_icon);
 		pause_button.setGraphic(play_icon);
@@ -117,7 +115,8 @@ public class MainPageController {
 		next_button.setOnAction(event -> player.nextSong());
 
 		// update user interface
-		player.addEvent(() -> trackInfo.setTrackInformation(player.getSong()));
+		trackInfo = new TrackInformationUpdater(album_art, artist_name, album_name, song_name);
+		player.addListener(() -> trackInfo.setTrackInformation(player.getSong()));
 		player.addListener(() -> controls.configureSlider(time_slider, player));
 
 		load_file.setOnAction(event -> {
