@@ -12,7 +12,6 @@
       </font>
   	</Label>
   	
-	<Label />
 	<Label wrapText="true" text="This application was made in an attempt to learn some new things and make a simple music player.">
 		<font>
 			<Font name="Segoe UI" size="14" />
@@ -32,5 +31,7 @@
 	    <Font name="Segoe UI" size="14" />
 	  </font>
 	</Label>
+	<Label />
+	
   </children>
 </VBox>
