@@ -1,0 +1,27 @@
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+
+<MenuBar fx:controller="controllers.MenuController" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+  <menus>
+    <Menu mnemonicParsing="false" text="File">
+      <items>
+        <MenuItem fx:id="load_file" mnemonicParsing="false" text="Load file" />
+        <MenuItem fx:id="load_directory" mnemonicParsing="false" text="Load folder" />
+        <SeparatorMenuItem mnemonicParsing="false" />
+        <MenuItem fx:id="quit_button" mnemonicParsing="false" text="Quit" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Edit">
+      <items>
+        <Menu fx:id="themes_picker" mnemonicParsing="false" text="Theme"/>
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Help">
+      <items>
+        <MenuItem fx:id="about_button" mnemonicParsing="false" text="About Music App" />
+      </items>
+    </Menu>
+  </menus>
+</MenuBar>
