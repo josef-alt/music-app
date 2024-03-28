@@ -6,7 +6,6 @@ import javafx.scene.image.ImageView;
 
 import media.Player;
 import media.Song;
-import pages.SepControl;
 
 /**
  * Handles display information for the user interface
