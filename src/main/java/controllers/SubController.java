@@ -6,7 +6,7 @@ import media.Player;
  * Provide common fields to various controlers
  */
 public class SubController {
-	protected SepControl parent;
+	protected MainController parent;
 	protected static Player player;
 
 	/**
@@ -19,7 +19,7 @@ public class SubController {
 	/**
 	 * Used to establish a link between nested controllers
 	 */
-	public void setParentController(SepControl parent) {
+	public void setParentController(MainController parent) {
 		this.parent = parent;
 	}
 }

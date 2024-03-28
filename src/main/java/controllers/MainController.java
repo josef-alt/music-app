@@ -14,7 +14,7 @@ import util.ResourceManager;
 /**
  * The top level controller for this application
  */
-public class SepControl {
+public class MainController {
 	@FXML
 	private MenuController menuController;
 
@@ -28,7 +28,7 @@ public class SepControl {
 	private final Stage currentStage;
 	private final Player player;
 
-	public SepControl() {
+	public MainController() {
 		currentStage = new Stage();
 		currentStage.setResizable(false);
 		currentStage.setTitle("Music App");

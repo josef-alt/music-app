@@ -12,8 +12,7 @@ public class MainPage extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		// MainPageController cont = new MainPageController();
-		SepControl cont = new SepControl();
+		MainController cont = new MainController();
 		cont.showStage();
 	}
 }
