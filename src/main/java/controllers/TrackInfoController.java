@@ -1,35 +1,40 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
+import media.Player;
 import media.Song;
+import pages.SepControl;
 
 /**
- * Extracted logic for displaying track meta-data on user interface
+ * Handles display information for the user interface
  */
-public class TrackInformationUpdater {
+public class TrackInfoController extends SubController {
+	@FXML
 	private ImageView album_art;
 
+	@FXML
 	private Label song_name, artist_name, album_name;
-	
-	public TrackInformationUpdater(ImageView album_art, Label artist_name, Label album_name, Label song_name) {
-		this.album_art = album_art;
-		this.artist_name = artist_name;
-		this.album_name = album_name;
-		this.song_name = song_name;
+
+	/**
+	 * Link the shared Player instance and add required listeners
+	 */
+	@Override
+	public void setPlayer(Player p) {
+		super.setPlayer(p);
+		player.addListener(() -> setTrackInformation());
 	}
 
 	/**
 	 * Update track information in user interface.
 	 */
-	void setTrackInformation(Song currentlyPlaying) {
-		if (currentlyPlaying == null) {
+	void setTrackInformation() {
+		if (player == null || player.getSong() == null) {
 			return;
 		}
+		Song currentlyPlaying = player.getSong();
 
 		if (currentlyPlaying.hasAlbum()) {
 			album_name.setText(currentlyPlaying.getAlbum());
