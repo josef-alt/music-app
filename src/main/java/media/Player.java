@@ -17,6 +17,7 @@ public class Player {
 	private MediaPlayer mediaPlayer;
 	private Library library;
 	private Song currentSong;
+	private File directory;
 
 	// only for use during song transitions
 	private boolean paused;
@@ -30,6 +31,7 @@ public class Player {
 	}
 
 	public void setDirectory(File dir) {
+		this.directory = dir;
 		this.library = new Library(dir.toPath());
 		this.libraryLength = library.getNumberOfTracks();
 		if (libraryLength > 0) {
@@ -153,5 +155,9 @@ public class Player {
 				mediaPlayer.stop();
 			}
 		}
+	}
+
+	public String getDirectory() {
+		return directory.getAbsolutePath();
 	}
 }
