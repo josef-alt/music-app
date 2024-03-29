@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import media.Player;
 import util.ResourceManager;
+import util.PreferenceManager;
 
 /**
  * The top level controller for this application
@@ -24,7 +25,6 @@ public class MainController {
 	@FXML
 	private PlayerControlsController playerControlsController;
 
-	private final Preferences userSettings;
 	private final Stage currentStage;
 	private final Player player;
 
@@ -33,7 +33,6 @@ public class MainController {
 		currentStage.setResizable(false);
 		currentStage.setTitle("Music App");
 		currentStage.getIcons().add(ResourceManager.getImage("/img/large/play.png"));
-		userSettings = Preferences.userRoot().node("music-app");
 		player = new Player();
 
 		try {
@@ -55,8 +54,8 @@ public class MainController {
 		}
 
 		// ensure directory is not set until all initialize functions have been run
-		String currentDirectory = userSettings.get("active-directory", "no directory set");
-		if (!currentDirectory.equals("no directory set")) {
+		String currentDirectory = PreferenceManager.getDirectory();
+		if (!currentDirectory.equals(PreferenceManager.DEFAULT)) {
 			player.setDirectory(new File(currentDirectory));
 		}
 	}
@@ -91,8 +90,8 @@ public class MainController {
 	 * Ensure preferences are up to date
 	 */
 	private void writePreferences() {
-		userSettings.put("user-theme", playerControlsController.getTheme());
-		userSettings.put("active-directory", player.getDirectory());
+		PreferenceManager.setTheme(playerControlsController.getTheme());
+		PreferenceManager.setDirectory(player.getDirectory());
 	}
 
 	/**

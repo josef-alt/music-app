@@ -13,6 +13,7 @@ import javafx.util.Duration;
 
 import media.Player;
 import util.ResourceManager;
+import util.PreferenceManager;
 
 /**
  * Acts as the link between the user and the Player
@@ -34,7 +35,11 @@ public class PlayerControlsController extends SubController {
 	 */
 	@FXML
 	public void initialize() {
-		activeTheme = Preferences.userRoot().node("music-app").get("user-theme", "default");
+		activeTheme = PreferenceManager.getTheme();
+		if (activeTheme.equals(PreferenceManager.DEFAULT)) {
+			activeTheme = "default";
+		}
+
 		play_icon = ResourceManager.getImage("/themes/" + activeTheme + "/play.png");
 		pause_icon = ResourceManager.getImage("/themes/" + activeTheme + "/pause.png");
 
