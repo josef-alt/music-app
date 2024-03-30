@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+  	<Label text="Library Information">
+      <font>
+	    <Font name="Segoe UI Bold" size="16" />
+      </font>
+  	</Label>
+  	
+	<ListView fx:id="stats_list" />	
+  </children>
+</VBox>
