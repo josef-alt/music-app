@@ -94,6 +94,10 @@ public class MainController {
 		PreferenceManager.setDirectory(player.getDirectory());
 	}
 
+	public Stage getStage() {
+		return currentStage;
+	}
+
 	/**
 	 * Ensures player is closed properly and exits stage.
 	 */
