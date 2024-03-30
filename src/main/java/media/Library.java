@@ -7,8 +7,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
 import java.util.Arrays;
-import java.util.stream.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Contains everything necessary for managing the music library.
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class Library {
 	private Song[] files;
 	private Path directory;
+	private LibraryStats stats;
 
 	// only supporting m4a files for now
 	private static final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**.{m4a,mp3,wav}");
@@ -43,12 +44,23 @@ public class Library {
 	 * Filters out unsupported types
 	 */
 	private void loadFiles() throws IOException {
+		stats = new LibraryStats();
 		if (Files.isDirectory(directory)) {
-			this.files = Files.list(directory).filter(matcher::matches).map(Path::toFile).map(Song::new)
-				.toArray(Song[]::new);
+			ArrayList<Song> songs = new ArrayList<>();
+			for (Path path : Files.newDirectoryStream(directory)) {
+				if (matcher.matches(path)) {
+					Song newSong = new Song(path.toFile());
+					stats.addSong(newSong);
+					songs.add(newSong);
+				}
+			}
+			this.files = songs.toArray(Song[]::new);
 		} else if (Files.isRegularFile(directory)) {
-			this.files = Stream.of(directory).filter(matcher::matches).map(Path::toFile).map(Song::new)
-					.toArray(Song[]::new);
+			if (matcher.matches(directory)) {
+				this.files = new Song[] { new Song(directory.toFile()) };
+			} else {
+				this.files = new Song[0];
+			}
 		}
 	}
 
@@ -58,6 +70,10 @@ public class Library {
 
 	public Song getTrack(int trackNumber) {
 		return files[trackNumber];
+	}
+
+	public LibraryStats getStats() {
+		return stats;
 	}
 
 	public String toString() {

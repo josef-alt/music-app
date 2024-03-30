@@ -1,14 +1,13 @@
 package media;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 
-import javafx.beans.property.*;
-import javafx.beans.value.*;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
-import javafx.util.*;
+import javafx.util.Duration;
 
 /**
  * Handles all operations associated with playing audio files.
@@ -35,9 +34,6 @@ public class Player {
 		this.library = new Library(dir.toPath());
 		this.libraryLength = library.getNumberOfTracks();
 		if (libraryLength > 0) {
-			System.out.println("Successfully loaded:");
-			// System.out.println(library.toString());
-
 			songIndex = -1;
 			nextSong();
 		}
@@ -159,5 +155,9 @@ public class Player {
 
 	public String getDirectory() {
 		return directory.getAbsolutePath();
+	}
+
+	public LibraryStats getStats() {
+		return library.getStats();
 	}
 }
