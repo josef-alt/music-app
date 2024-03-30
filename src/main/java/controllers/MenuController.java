@@ -17,7 +17,7 @@ import util.ResourceManager;
  */
 public class MenuController extends SubController {
 	@FXML
-	private MenuItem quit_button, load_directory, load_file, about_button;
+	private MenuItem quit_button, load_directory, load_file, about_button, stats_button;
 
 	@FXML
 	private Menu themes_picker;
@@ -44,11 +44,17 @@ public class MenuController extends SubController {
 				player.setDirectory(picked);
 			}
 		});
-		about_button.setOnAction(event -> new AboutPage(null));
 
 		quit_button.setOnAction(event -> parent.quit());
 	}
 
+	@Override
+	public void setParentController(MainController parent) {
+		super.setParentController(parent);
+
+		stats_button.setOnAction(event -> new StatsPage(parent.getStage(), player));
+		about_button.setOnAction(event -> new AboutPage(parent.getStage()));
+	}
 	/**
 	 * Attempts to load installed themes from resources
 	 */

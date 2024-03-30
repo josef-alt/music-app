@@ -20,6 +20,7 @@
     </Menu>
     <Menu mnemonicParsing="false" text="Help">
       <items>
+      	<MenuItem fx:id="stats_button" mnemonicParsing="false" text="My Stats" />
         <MenuItem fx:id="about_button" mnemonicParsing="false" text="About Music App" />
       </items>
     </Menu>
