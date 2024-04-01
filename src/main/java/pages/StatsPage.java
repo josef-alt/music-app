@@ -59,6 +59,8 @@ public class StatsPage {
 	 * @param duration in seconds
 	 */
 	private String durationToString(int duration) {
+		int days = duration / (3600 * 24);
+		duration %= 3600 * 24;
 		int hours = duration / 3600;
 		duration %= 3600;
 		int minutes = duration / 60;
@@ -66,7 +68,11 @@ public class StatsPage {
 		int seconds = duration % 60;
 
 		if (hours > 0) {
-			return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+			if (days > 0) {
+				return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds);
+			} else {
+				return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+			}
 		} else {
 			return String.format("%02d:%02d", minutes, seconds);
 		}
@@ -105,7 +111,6 @@ public class StatsPage {
 	@FXML
 	public void initialize() {
 		ArrayList<Node> elements = new ArrayList<>(10);
-		Separator sep = new Separator();
 
 		LibraryStats statistics = player.getStats();
 		String title;
@@ -114,7 +119,8 @@ public class StatsPage {
 		elements.add(createTwoColumnNode("Songs", Integer.toString(statistics.getTotalSongs())));
 		elements.add(createTwoColumnNode("Albums", Integer.toString(statistics.getTotalAlbums())));
 		elements.add(createTwoColumnNode("Artists", Integer.toString(statistics.getTotalArtists())));
-		elements.add(sep);
+		elements.add(createTwoColumnNode("Total Duration", durationToString(statistics.getTotalDuration())));
+		elements.add(new Separator());
 
 		// extrema
 		Song shortest = statistics.getShortest();
@@ -132,11 +138,23 @@ public class StatsPage {
 			title = longest.getTitle();
 			elements.add(createFullWidthNode(title == null ? "Unknown Title" : title));
 		}
-		elements.add(sep);
+
+		String artist = statistics.getArtistWithMostSongs();
+		int songs = statistics.getMostSongsByArtist();
+		elements.add(createTwoColumnNode("Songs by one Artist", Integer.toString(songs)));
+		elements.add(createFullWidthNode(artist));
+		artist = statistics.getArtistWithMostAlbums();
+		int albums = statistics.getMostAlbumsByArtist();
+		elements.add(createTwoColumnNode("Albums by one Artist", Integer.toString(albums)));
+		elements.add(createFullWidthNode(artist));
+
+		elements.add(new Separator());
 
 		// most played?
 		// average?
 		// genres?
+
+		statistics.getTotalAlbums();
 
 		stats_list.getItems().setAll(elements);
 	}
