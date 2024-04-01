@@ -58,6 +58,7 @@ public class Library {
 		} else if (Files.isRegularFile(directory)) {
 			if (matcher.matches(directory)) {
 				this.files = new Song[] { new Song(directory.toFile()) };
+				stats.addSong(files[0]);
 			} else {
 				this.files = new Song[0];
 			}
