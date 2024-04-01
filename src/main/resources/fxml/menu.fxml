@@ -16,6 +16,12 @@
     <Menu mnemonicParsing="false" text="Edit">
       <items>
         <Menu fx:id="themes_picker" mnemonicParsing="false" text="Theme"/>
+        <Menu mnemonicParsing="false" text="Ordering">
+          <items>
+            <MenuItem fx:id="inorder" text="Alphabetical" />
+            <MenuItem fx:id="shuffle" text="Shuffle" />
+          </items>
+        </Menu>
       </items>
     </Menu>
     <Menu mnemonicParsing="false" text="Help">

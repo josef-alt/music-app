@@ -33,7 +33,8 @@ public class MainController {
 		currentStage.setResizable(false);
 		currentStage.setTitle("Music App");
 		currentStage.getIcons().add(ResourceManager.getImage("/img/large/play.png"));
-		player = new Player();
+		boolean shuffle = Boolean.parseBoolean(PreferenceManager.getShuffled());
+		player = new Player(shuffle);
 
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
@@ -92,6 +93,7 @@ public class MainController {
 	private void writePreferences() {
 		PreferenceManager.setTheme(playerControlsController.getTheme());
 		PreferenceManager.setDirectory(player.getDirectory());
+		PreferenceManager.setShuffle(player.getShuffled());
 	}
 
 	public Stage getStage() {

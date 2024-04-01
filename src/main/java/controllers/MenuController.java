@@ -17,7 +17,7 @@ import util.ResourceManager;
  */
 public class MenuController extends SubController {
 	@FXML
-	private MenuItem quit_button, load_directory, load_file, about_button, stats_button;
+	private MenuItem quit_button, load_directory, load_file, about_button, stats_button, shuffle, inorder;
 
 	@FXML
 	private Menu themes_picker;
@@ -44,6 +44,9 @@ public class MenuController extends SubController {
 				player.setDirectory(picked);
 			}
 		});
+
+		shuffle.setOnAction(event -> player.shuffle());
+		inorder.setOnAction(event -> player.inorder());
 
 		quit_button.setOnAction(event -> parent.quit());
 	}
