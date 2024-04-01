@@ -1,7 +1,8 @@
 package media;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.*;
 
 import javafx.beans.value.ChangeListener;
 import javafx.scene.media.Media;
@@ -18,15 +19,19 @@ public class Player {
 	private Song currentSong;
 	private File directory;
 
+	private ArrayList<Integer> sequence;
+	private boolean shuffled;
+
 	// only for use during song transitions
 	private boolean paused;
 	private int songIndex;
 	private int libraryLength;
 
 	// TODO decide whether to keep this or not
-	public Player() {
+	public Player(boolean shuffle) {
 		this.paused = true;
 		setDirectory(new File("."));
+		this.shuffled = shuffle;
 	}
 
 	public void setDirectory(File dir) {
@@ -34,9 +39,29 @@ public class Player {
 		this.library = new Library(dir.toPath());
 		this.libraryLength = library.getNumberOfTracks();
 		if (libraryLength > 0) {
-			songIndex = -1;
-			nextSong();
+			resetSequence();
+			if (this.shuffled) {
+				shuffle();
+			}
 		}
+	}
+
+	private void resetSequence() {
+		sequence = IntStream.range(0, libraryLength).boxed().collect(Collectors.toCollection(ArrayList<Integer>::new));
+		songIndex = -1;
+		nextSong();
+	}
+
+	public void shuffle() {
+		this.shuffled = true;
+		Collections.shuffle(sequence);
+		songIndex = -1;
+		nextSong();
+	}
+
+	public void inorder() {
+		this.shuffled = false;
+		resetSequence();
 	}
 
 	/**
@@ -70,7 +95,7 @@ public class Player {
 		}
 		songIndex = (songIndex + 1) % libraryLength;
 
-		currentSong = library.getTrack(songIndex);
+		currentSong = library.getTrack(sequence.get(songIndex));
 		changeSongs();
 	}
 
@@ -83,7 +108,7 @@ public class Player {
 		}
 		songIndex = (songIndex - 1 + libraryLength) % libraryLength;
 
-		currentSong = library.getTrack(songIndex);
+		currentSong = library.getTrack(sequence.get(songIndex));
 		changeSongs();
 	}
 
@@ -154,10 +179,15 @@ public class Player {
 	}
 
 	public String getDirectory() {
+		System.out.println(directory + " " + directory.getPath() + " " + directory.getAbsolutePath());
 		return directory.getAbsolutePath();
 	}
 
 	public LibraryStats getStats() {
 		return library.getStats();
+	}
+
+	public boolean getShuffled() {
+		return shuffled;
 	}
 }
