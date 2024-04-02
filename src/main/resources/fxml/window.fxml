@@ -1,0 +1,15 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Separator?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <fx:include fx:id="menu" source="menu.fxml" />
+    <HBox>
+      <children>
+      <fx:include fx:id="mysidebar" source="sidebar.fxml" />
+      <Separator />
+      <fx:include fx:id="myplayer"  source="player.fxml" />
+      </children>
+    </HBox>
+  </children>
+</VBox>

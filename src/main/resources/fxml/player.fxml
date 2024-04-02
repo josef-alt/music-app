@@ -1,0 +1,7 @@
+<?import javafx.scene.layout.VBox?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefWidth="300.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <fx:include fx:id="trackInfo" source="trackInfo.fxml" />
+    <fx:include fx:id="playerControls" source="playerControls.fxml" />
+  </children>
+</VBox>
