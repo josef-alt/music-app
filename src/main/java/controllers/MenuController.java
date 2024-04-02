@@ -5,9 +5,9 @@ import java.io.File;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.stage.FileChooser;
 import javafx.stage.DirectoryChooser;
-
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import media.Player;
 import pages.*;
 import util.ResourceManager;
@@ -26,7 +26,6 @@ public class MenuController {
 
 	public MenuController(Model model) {
 		this.model = model;
-
 	}
 
 	@FXML
@@ -54,6 +53,10 @@ public class MenuController {
 
 		shuffle.setOnAction(event -> model.getPlayer().shuffle());
 		inorder.setOnAction(event -> model.getPlayer().inorder());
+
+		Stage parentStage = model.getMainController().getStage();
+		about_button.setOnAction(event -> new AboutPage(parentStage));
+		stats_button.setOnAction(event -> new StatsPage(parentStage, model.getPlayer()));
 
 		quit_button.setOnAction(event -> model.getMainController().getStage().close());
 	}
