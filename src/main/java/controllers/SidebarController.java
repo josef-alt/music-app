@@ -18,8 +18,9 @@ public class SidebarController {
 	@FXML
 	public void initialize() {
 		sideview_songs.getSelectionModel().selectedIndexProperty().addListener((a, b, c) -> {
-			model.getPlayer().setIndex(a.getValue().intValue());
-			System.out.println(a.getValue().intValue());
+			int index = a.getValue().intValue();
+			if (index >= 0)
+				model.getPlayer().setIndex(index);
 		});
 
 		sideview_songs.setItems(model.getPlayer().getObservableList());
