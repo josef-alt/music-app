@@ -27,7 +27,7 @@ public class Song {
 	private String title;
 	private String album;
 	private String artist;
-	private Image cover;
+	private byte[] cover;
 	private File source;
 	private int duration;
 
@@ -58,8 +58,7 @@ public class Song {
 			}
 
 			if (tag.hasField(FieldKey.COVER_ART)) {
-				cover = new Image(new ByteArrayInputStream(tag.getFirstArtwork().getBinaryData()), 250, 250, false,
-						false);
+				cover = tag.getFirstArtwork().getBinaryData();
 			}
 
 			if (tag.hasField(FieldKey.ARTIST)) {
@@ -118,7 +117,9 @@ public class Song {
 	 * Should always return a valid image - never null
 	 */
 	public Image getCover() {
-		return hasCover() ? cover : DEFAULT_ALBUM_COVER;
+		if (hasCover())
+			return new Image(new ByteArrayInputStream(cover));
+		return DEFAULT_ALBUM_COVER;
 	}
 
 	public File getFile() {
