@@ -179,7 +179,6 @@ public class Player {
 	}
 
 	public String getDirectory() {
-		System.out.println(directory + " " + directory.getPath() + " " + directory.getAbsolutePath());
 		return directory.getAbsolutePath();
 	}
 
