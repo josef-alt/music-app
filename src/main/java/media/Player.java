@@ -43,8 +43,13 @@ public class Player {
 		if (libraryLength > 0) {
 			sequence = IntStream.range(0, libraryLength).boxed()
 					.collect(Collectors.toCollection(ArrayList<Integer>::new));
-			nowPlaying = FXCollections
+			if (nowPlaying == null) {
+				nowPlaying = FXCollections
 					.observableArrayList(sequence.stream().map(index -> library.getTrack(index)).toList());
+			} else {
+				nowPlaying.clear();
+				nowPlaying.addAll(sequence.stream().map(index -> library.getTrack(index)).toList());
+			}
 
 			if (shuffled) {
 				shuffle();
@@ -68,7 +73,7 @@ public class Player {
 
 	public void inorder() {
 		this.shuffled = false;
-		nowPlaying.sort(Comparator.comparing(song -> song.getTitle()));
+		nowPlaying.sort(Comparator.comparing(song -> song.hasTitle() ? song.getTitle() : "unknown"));
 		songIndex = -1;
 		nextSong();
 	}
