@@ -35,20 +35,29 @@ public class MainController {
 		currentStage.setResizable(false);
 		currentStage.setTitle("Music App");
 		currentStage.getIcons().add(ResourceManager.getImage("/img/large/play.png"));
+
 		boolean shuffle = Boolean.parseBoolean(PreferenceManager.getShuffled());
 		player = new Player(shuffle);
+		String currentDirectory = PreferenceManager.getDirectory();
+		if (!currentDirectory.equals(PreferenceManager.DEFAULT)) {
+			player.setDirectory(new File(currentDirectory));
+		}
 
 		Model model = new Model(player, this);
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/window.fxml"));
 			loader.setController(this);
 			loader.setControllerFactory(type -> {
 				if (type.equals(MenuController.class))
 					return new MenuController(model);
 				if (type.equals(TrackInfoController.class))
 					return new TrackInfoController(model);
-				if (type.equals(PlayerControlsController.class))
-					return new PlayerControlsController(model);
+				if (type.equals(PlayerControlsController.class)) {
+					playerControlsController = new PlayerControlsController(model);
+					return playerControlsController;
+				}
+				if (type.equals(SidebarController.class))
+					return new SidebarController(model);
 				throw new IllegalArgumentException("Unexpected controller type: " + type);
 			});
 
@@ -58,7 +67,9 @@ public class MainController {
 			currentScene.getStylesheets().add(getClass().getResource("/themes/basic_config.css").toString());
 
 			// configure default/startup theme
-			currentScene.getStylesheets().add(ResourceManager.getStyleSheet(playerControlsController.getTheme()));
+			String startupTheme = PreferenceManager.getTheme();
+			currentScene.getStylesheets()
+					.add(ResourceManager.getStyleSheet(startupTheme == null ? "default" : startupTheme));
 
 			currentStage.setScene(currentScene);
 		} catch (IOException e) {
@@ -66,11 +77,7 @@ public class MainController {
 			e.printStackTrace();
 		}
 
-		// ensure directory is not set until all initialize functions have been run
-		String currentDirectory = PreferenceManager.getDirectory();
-		if (!currentDirectory.equals(PreferenceManager.DEFAULT)) {
-			player.setDirectory(new File(currentDirectory));
-		}
+		player.notifyListeners();
 	}
 
 	@FXML
