@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.stream.*;
 
 import javafx.beans.value.ChangeListener;
+import javafx.collections.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
@@ -19,6 +20,7 @@ public class Player {
 	private Song currentSong;
 	private File directory;
 
+	private ObservableList<Song> nowPlaying;
 	private ArrayList<Integer> sequence;
 	private boolean shuffled;
 
@@ -39,29 +41,36 @@ public class Player {
 		this.library = new Library(dir.toPath());
 		this.libraryLength = library.getNumberOfTracks();
 		if (libraryLength > 0) {
-			resetSequence();
-			if (this.shuffled) {
+			sequence = IntStream.range(0, libraryLength).boxed()
+					.collect(Collectors.toCollection(ArrayList<Integer>::new));
+			nowPlaying = FXCollections
+					.observableArrayList(sequence.stream().map(index -> library.getTrack(index)).toList());
+
+			if (shuffled) {
 				shuffle();
+			} else {
+				inorder();
 			}
 		}
+		notifyListeners();
 	}
 
-	private void resetSequence() {
-		sequence = IntStream.range(0, libraryLength).boxed().collect(Collectors.toCollection(ArrayList<Integer>::new));
-		songIndex = -1;
-		nextSong();
+	public ObservableList<Song> getObservableList() {
+		return nowPlaying;
 	}
 
 	public void shuffle() {
 		this.shuffled = true;
-		Collections.shuffle(sequence);
+		Collections.shuffle(nowPlaying);
 		songIndex = -1;
 		nextSong();
 	}
 
 	public void inorder() {
 		this.shuffled = false;
-		resetSequence();
+		nowPlaying.sort(Comparator.comparing(song -> song.getTitle()));
+		songIndex = -1;
+		nextSong();
 	}
 
 	/**
@@ -81,7 +90,16 @@ public class Player {
 		if (!paused) {
 			mediaPlayer.play();
 		}
+
+		System.out.println("set new song");
 		notifyListeners();
+	}
+
+	public void setIndex(int index) {
+		songIndex = index;
+		currentSong = nowPlaying.get(index);
+		System.out.println("switching to " + index + " " + nowPlaying.get(index));
+		changeSongs();
 	}
 
 	/**
@@ -95,7 +113,8 @@ public class Player {
 		}
 		songIndex = (songIndex + 1) % libraryLength;
 
-		currentSong = library.getTrack(sequence.get(songIndex));
+		// currentSong = library.getTrack(songIndex);
+		currentSong = nowPlaying.get(songIndex);
 		changeSongs();
 	}
 
@@ -108,7 +127,8 @@ public class Player {
 		}
 		songIndex = (songIndex - 1 + libraryLength) % libraryLength;
 
-		currentSong = library.getTrack(sequence.get(songIndex));
+		// currentSong = library.getTrack(songIndex);
+		currentSong = nowPlaying.get(songIndex);
 		changeSongs();
 	}
 
@@ -161,7 +181,7 @@ public class Player {
 		listeners.add(e);
 	}
 
-	private void notifyListeners() {
+	public void notifyListeners() {
 		for (Runnable event : listeners) {
 			event.run();
 		}
