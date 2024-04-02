@@ -7,7 +7,7 @@
 <VBox fx:controller="controllers.TrackInfoController" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
   <HBox alignment="CENTER" fillHeight="false" nodeOrientation="LEFT_TO_RIGHT">
     <children>
-      <ImageView fx:id="album_art" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="album_art" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="false" />
     </children>
   </HBox>
   <HBox alignment="CENTER" maxWidth="300.0" minWidth="300.0" prefWidth="300.0">
