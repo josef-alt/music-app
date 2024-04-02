@@ -18,7 +18,7 @@ import util.PreferenceManager;
 /**
  * Acts as the link between the user and the Player
  */
-public class PlayerControlsController extends SubController {
+public class PlayerControlsController {
 	@FXML
 	private Button prev_button, pause_button, next_button;
 
@@ -29,6 +29,11 @@ public class PlayerControlsController extends SubController {
 	private Slider time_slider;
 
 	private String activeTheme;
+	private Model model;
+
+	public PlayerControlsController(Model model) {
+		this.model = model;
+	}
 
 	/**
 	 * Set up controls using startup theme for icons
@@ -50,19 +55,11 @@ public class PlayerControlsController extends SubController {
 		prev_button.setGraphic(prev_view);
 		pause_button.setGraphic(pause_view);
 		next_button.setGraphic(next_view);
-	}
 
-	/**
-	 * Link the shared Player instance and add required listeners
-	 */
-	@Override
-	public void setPlayer(Player newPlayer) {
-		super.setPlayer(newPlayer);
-
-		player.addListener(() -> configureSlider());
-		prev_button.setOnAction(event -> player.prevSong());
-		pause_button.setOnAction(event -> togglePause(player.pause()));
-		next_button.setOnAction(event -> player.nextSong());
+		model.getPlayer().addListener(() -> configureSlider());
+		prev_button.setOnAction(event -> model.getPlayer().prevSong());
+		pause_button.setOnAction(event -> togglePause(model.getPlayer().pause()));
+		next_button.setOnAction(event -> model.getPlayer().nextSong());
 	}
 
 	/**
@@ -121,7 +118,7 @@ public class PlayerControlsController extends SubController {
 	 * Configure listeners to form link between slider and player
 	 */
 	public void configureSlider() {
-		time_slider.setMax(player.getSong().getDuration());
+		time_slider.setMax(model.getPlayer().getSong().getDuration());
 		time_slider.setMin(0);
 
 		int total_mins = (int) (time_slider.getMax() / 60);
@@ -132,7 +129,7 @@ public class PlayerControlsController extends SubController {
 		time_slider.setTooltip(indicator);
 
 		// automatic slider increment
-		player.addTimeListener((obs, old_val, new_val) -> {
+		model.getPlayer().addTimeListener((obs, old_val, new_val) -> {
 			if (!sliderUpdateInProgress) {
 				time_slider.setValue(new_val.toSeconds());
 				current_mins = (int) (time_slider.getValue() / 60);
@@ -145,7 +142,7 @@ public class PlayerControlsController extends SubController {
 		time_slider.valueChangingProperty().addListener((obs, old_progress, new_progress) -> {
 			sliderUpdateInProgress = new_progress;
 			if (!sliderUpdateInProgress && sliderNewVal != Double.NEGATIVE_INFINITY) {
-				player.seek(sliderNewVal);
+				model.getPlayer().seek(sliderNewVal);
 			}
 		});
 
@@ -156,7 +153,7 @@ public class PlayerControlsController extends SubController {
 				if (sliderUpdateInProgress) {
 					sliderNewVal = new_time.intValue();
 				} else {
-					player.seek(new_time.intValue());
+					model.getPlayer().seek(new_time.intValue());
 				}
 			}
 		});

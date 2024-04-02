@@ -15,12 +15,19 @@ import util.ResourceManager;
 /**
  * Handles the menu bar and everything there in
  */
-public class MenuController extends SubController {
+public class MenuController {
 	@FXML
 	private MenuItem quit_button, load_directory, load_file, about_button, stats_button, shuffle, inorder;
 
 	@FXML
 	private Menu themes_picker;
+
+	private Model model;
+
+	public MenuController(Model model) {
+		this.model = model;
+
+	}
 
 	@FXML
 	public void initialize() {
@@ -32,7 +39,7 @@ public class MenuController extends SubController {
 
 			File picked = picker.showOpenDialog(null);
 			if (picked != null && picked.exists()) {
-				player.setDirectory(picked);
+				model.getPlayer().setDirectory(picked);
 			}
 		});
 
@@ -41,23 +48,16 @@ public class MenuController extends SubController {
 
 			File picked = picker.showDialog(null);
 			if (picked != null && picked.exists()) {
-				player.setDirectory(picked);
+				model.getPlayer().setDirectory(picked);
 			}
 		});
 
-		shuffle.setOnAction(event -> player.shuffle());
-		inorder.setOnAction(event -> player.inorder());
+		shuffle.setOnAction(event -> model.getPlayer().shuffle());
+		inorder.setOnAction(event -> model.getPlayer().inorder());
 
-		quit_button.setOnAction(event -> parent.quit());
+		quit_button.setOnAction(event -> model.getMainController().getStage().close());
 	}
 
-	@Override
-	public void setParentController(MainController parent) {
-		super.setParentController(parent);
-
-		stats_button.setOnAction(event -> new StatsPage(parent.getStage(), player));
-		about_button.setOnAction(event -> new AboutPage(parent.getStage()));
-	}
 	/**
 	 * Attempts to load installed themes from resources
 	 */
@@ -66,7 +66,7 @@ public class MenuController extends SubController {
 
 		for (String dir : themes) {
 			MenuItem item = new MenuItem(dir);
-			item.setOnAction(event -> parent.setTheme(dir));
+			item.setOnAction(event -> model.getMainController().setTheme(dir));
 			themes_picker.getItems().add(item);
 		}
 	}

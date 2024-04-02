@@ -13,30 +13,35 @@ import media.Song;
 /**
  * Handles display information for the user interface
  */
-public class TrackInfoController extends SubController {
+public class TrackInfoController {
 	@FXML
 	private ImageView album_art;
 
 	@FXML
 	private Label song_name, artist_name, album_name;
 
+	private Model model;
+
+	public TrackInfoController(Model model) {
+		this.model = model;
+	}
+
 	/**
-	 * Link the shared Player instance and add required listeners
+	 * Set up player listeners
 	 */
-	@Override
-	public void setPlayer(Player p) {
-		super.setPlayer(p);
-		player.addListener(() -> setTrackInformation());
+	@FXML
+	public void initialize() {
+		model.getPlayer().addListener(() -> setTrackInformation());
 	}
 
 	/**
 	 * Update track information in user interface.
 	 */
 	void setTrackInformation() {
-		if (player == null || player.getSong() == null) {
+		if (model.getPlayer() == null || model.getPlayer().getSong() == null) {
 			return;
 		}
-		Song currentlyPlaying = player.getSong();
+		Song currentlyPlaying = model.getPlayer().getSong();
 
 		if (currentlyPlaying.hasAlbum()) {
 			album_name.setText(currentlyPlaying.getAlbum());

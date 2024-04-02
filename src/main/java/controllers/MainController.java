@@ -2,9 +2,11 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.*;
+import java.util.*;
 import java.util.prefs.Preferences;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
+import javafx.fxml.*;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -36,9 +38,19 @@ public class MainController {
 		boolean shuffle = Boolean.parseBoolean(PreferenceManager.getShuffled());
 		player = new Player(shuffle);
 
+		Model model = new Model(player, this);
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
 			loader.setController(this);
+			loader.setControllerFactory(type -> {
+				if (type.equals(MenuController.class))
+					return new MenuController(model);
+				if (type.equals(TrackInfoController.class))
+					return new TrackInfoController(model);
+				if (type.equals(PlayerControlsController.class))
+					return new PlayerControlsController(model);
+				throw new IllegalArgumentException("Unexpected controller type: " + type);
+			});
 
 			Scene currentScene = new Scene(loader.load());
 
@@ -63,17 +75,9 @@ public class MainController {
 
 	@FXML
 	public void initialize() {
-		// link sub controllers
-		menuController.setPlayer(player);
-		trackInfoController.setPlayer(player);
-		playerControlsController.setPlayer(player);
-
-		menuController.setParentController(this);
-		trackInfoController.setParentController(this);
-		playerControlsController.setParentController(this);
-
 		// make sure all close events are handled the same way
 		currentStage.setOnCloseRequest(event -> quit());
+		currentStage.setOnHidden(event -> quit());
 	}
 
 	/**
@@ -104,6 +108,7 @@ public class MainController {
 	 * Ensures player is closed properly and exits stage.
 	 */
 	public void quit() {
+		System.out.println("quit button");
 		writePreferences();
 		player.quit();
 		currentStage.close();
