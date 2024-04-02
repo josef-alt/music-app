@@ -1,6 +1,9 @@
 package controllers;
 
-import javafx.fxml.FXML;
+import java.net.*;
+import java.util.*;
+
+import javafx.fxml.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
@@ -37,14 +40,20 @@ public class TrackInfoController extends SubController {
 
 		if (currentlyPlaying.hasAlbum()) {
 			album_name.setText(currentlyPlaying.getAlbum());
+		} else {
+			album_name.setText("Unknown Album");
 		}
 
 		if (currentlyPlaying.hasArtist()) {
 			artist_name.setText(currentlyPlaying.getArtist());
+		} else {
+			artist_name.setText("Unknown Artist");
 		}
 
 		if (currentlyPlaying.hasTitle()) {
 			song_name.setText(currentlyPlaying.getTitle());
+		} else {
+			song_name.setText(currentlyPlaying.getFile().getName());
 		}
 
 		// no check because it should never be null
