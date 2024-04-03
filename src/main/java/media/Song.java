@@ -67,6 +67,8 @@ public class Song {
 
 			if (tag.hasField(FieldKey.TITLE)) {
 				title = tag.getFirst(FieldKey.TITLE);
+			} else {
+				title = source.getName();
 			}
 
 			duration = af.getAudioHeader().getTrackLength();
