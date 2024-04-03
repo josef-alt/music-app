@@ -96,14 +96,12 @@ public class Player {
 			mediaPlayer.play();
 		}
 
-		System.out.println("set new song");
 		notifyListeners();
 	}
 
 	public void setIndex(int index) {
 		songIndex = index;
 		currentSong = nowPlaying.get(index);
-		System.out.println("switching to " + index + " " + nowPlaying.get(index));
 		changeSongs();
 	}
 
