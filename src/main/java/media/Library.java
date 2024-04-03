@@ -21,7 +21,8 @@ public class Library {
 	private LibraryStats stats;
 
 	// only supporting m4a files for now
-	private static final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**.{m4a,mp3,wav}");
+	private static final PathMatcher matcher = FileSystems.getDefault()
+			.getPathMatcher("glob:**.{aif,aiff,mp3,mp4,m4a,wav}");
 
 	public Library(String dir) {
 		this(Path.of(dir));
