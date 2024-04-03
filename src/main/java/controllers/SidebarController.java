@@ -24,7 +24,6 @@ public class SidebarController {
 		});
 
 		sideview_songs.setItems(model.getPlayer().getObservableList());
-
 		sideview_songs.setPrefHeight(425);
 	}
 }
