@@ -25,5 +25,9 @@ public class SidebarController {
 
 		sideview_songs.setItems(model.getPlayer().getObservableList());
 		sideview_songs.setPrefHeight(425);
+
+		model.getPlayer().addListener(() -> {
+			sideview_songs.getSelectionModel().select(model.getPlayer().getSong());
+		});
 	}
 }
