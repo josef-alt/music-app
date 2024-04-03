@@ -6,9 +6,8 @@
     <fx:include fx:id="menu" source="menu.fxml" />
     <HBox>
       <children>
-      <fx:include fx:id="mysidebar" source="sidebar.fxml" />
-      <Separator />
-      <fx:include fx:id="myplayer"  source="player.fxml" />
+        <fx:include fx:id="mysidebar" source="sidebar.fxml" />
+        <fx:include fx:id="myplayer"  source="player.fxml" />
       </children>
     </HBox>
   </children>

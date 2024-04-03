@@ -131,6 +131,6 @@ public class Song {
 	}
 
 	public String toString() {
-		return String.format("%s - %s", title, album);
+		return String.format("%s", title);
 	}
 }

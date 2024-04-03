@@ -17,12 +17,14 @@ public class SidebarController {
 
 	@FXML
 	public void initialize() {
-		sideview_songs.getSelectionModel().selectedIndexProperty().addListener((a, b, c) -> {
-			int index = a.getValue().intValue();
+		sideview_songs.getSelectionModel().selectedIndexProperty().addListener((obs, old, sel) -> {
+			int index = sel.intValue();
 			if (index >= 0)
 				model.getPlayer().setIndex(index);
 		});
 
 		sideview_songs.setItems(model.getPlayer().getObservableList());
+
+		sideview_songs.setPrefHeight(425);
 	}
 }
