@@ -23,6 +23,13 @@ public class ResourceManager {
 	}
 
 	/**
+	 * Retrieve image from resources
+	 */
+	public static Image getImage(String name, int size) {
+		return new Image(ResourceManager.class.getResourceAsStream(name), size, size, true, false);
+	}
+
+	/**
 	 * Attempts to load installed themes from resources
 	 */
 	public static String[] loadThemes() {

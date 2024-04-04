@@ -10,7 +10,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import media.Player;
 import pages.*;
-import util.ResourceManager;
+import util.*;
 
 /**
  * Handles the menu bar and everything there in
@@ -22,10 +22,12 @@ public class MenuController {
 	@FXML
 	private Menu themes_picker;
 
+	private ThemeSwitcher switcher;
 	private Model model;
 
-	public MenuController(Model model) {
+	public MenuController(Model model, ThemeSwitcher switcher) {
 		this.model = model;
+		this.switcher = switcher;
 	}
 
 	@FXML
@@ -69,7 +71,7 @@ public class MenuController {
 
 		for (String dir : themes) {
 			MenuItem item = new MenuItem(dir);
-			item.setOnAction(event -> model.getMainController().setTheme(dir));
+			item.setOnAction(event -> switcher.update(dir));
 			themes_picker.getItems().add(item);
 		}
 	}

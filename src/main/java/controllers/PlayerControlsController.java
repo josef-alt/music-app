@@ -12,8 +12,7 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import media.Player;
-import util.ResourceManager;
-import util.PreferenceManager;
+import util.*;
 
 /**
  * Acts as the link between the user and the Player
@@ -28,11 +27,12 @@ public class PlayerControlsController {
 	@FXML
 	private Slider time_slider;
 
-	private String activeTheme;
+	ThemeSwitcher switcher;
 	private Model model;
 
-	public PlayerControlsController(Model model) {
+	public PlayerControlsController(Model model, ThemeSwitcher switcher) {
 		this.model = model;
+		this.switcher = switcher;
 	}
 
 	/**
@@ -40,17 +40,12 @@ public class PlayerControlsController {
 	 */
 	@FXML
 	public void initialize() {
-		activeTheme = PreferenceManager.getTheme();
-		if (activeTheme.equals(PreferenceManager.DEFAULT)) {
-			activeTheme = "default";
-		}
-
-		play_icon = ResourceManager.getImage("/themes/" + activeTheme + "/play.png");
-		pause_icon = ResourceManager.getImage("/themes/" + activeTheme + "/pause.png");
-
-		prev_view = new ImageView(ResourceManager.getImage("/themes/" + activeTheme + "/prev.png"));
-		pause_view = new ImageView(play_icon);
-		next_view = new ImageView(ResourceManager.getImage("/themes/" + activeTheme + "/next.png"));
+		prev_view = new ImageView();
+		pause_view = new ImageView(switcher.getPlayIcon());
+		next_view = new ImageView();
+		switcher.addView(prev_view, "prev", 50);
+		switcher.addView(next_view, "next", 50);
+		switcher.addListener(() -> togglePause());
 
 		prev_button.setGraphic(prev_view);
 		pause_button.setGraphic(pause_view);
@@ -58,55 +53,21 @@ public class PlayerControlsController {
 
 		model.getPlayer().addListener(() -> configureSlider());
 		prev_button.setOnAction(event -> model.getPlayer().prevSong());
-		pause_button.setOnAction(event -> togglePause(model.getPlayer().pause()));
+		pause_button.setOnAction(event -> {
+			model.getPlayer().pause();
+			togglePause();
+		});
 		next_button.setOnAction(event -> model.getPlayer().nextSong());
-	}
-
-	/**
-	 * Setters for icons because these may change with the theme.
-	 * 
-	 * TODO Styling Issue - Where to call setTheme(default)
-	 * The default theme has to be loaded manually in the controller
-	 * because getScene returns null.
-	 */
-	public void setTheme(String theme) {
-		// apply new style sheet to scene
-		Scene curr = prev_button.getScene();
-		if (curr.getStylesheets().size() > 1)
-			curr.getStylesheets().remove(1);
-		prev_button.getScene().getStylesheets().add(ResourceManager.getStyleSheet(theme));
-
-		// need to keep track of which icon is in use before loading new icons
-		boolean paused = pause_view.getImage() == play_icon;
-
-		// load new theme icons
-		this.prev_view.setImage(ResourceManager.getImage("/themes/" + theme + "/prev.png"));
-		this.next_view.setImage(ResourceManager.getImage("/themes/" + theme + "/next.png"));
-		this.play_icon = ResourceManager.getImage("/themes/" + theme + "/play.png");
-		this.pause_icon = ResourceManager.getImage("/themes/" + theme + "/pause.png");
-
-		// make sure that the correct icon is put back after theme switch
-		togglePause(paused);
-
-		activeTheme = theme;
-	}
-
-	public String getTheme() {
-		return activeTheme;
 	}
 
 	/**
 	 * Update Play/Pause icon
 	 */
-	void togglePause(boolean paused) {
-		if (play_icon == null || pause_icon == null) {
-			return;
-		}
-
-		if (paused) {
-			pause_view.setImage(play_icon);
+	void togglePause() {
+		if (model.getPlayer().isPaused()) {
+			pause_view.setImage(switcher.getPlayIcon());
 		} else {
-			pause_view.setImage(pause_icon);
+			pause_view.setImage(switcher.getPauseIcon());
 		}
 	}
 

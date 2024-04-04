@@ -11,8 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import media.Player;
-import util.ResourceManager;
-import util.PreferenceManager;
+import util.*;
 
 /**
  * The top level controller for this application
@@ -44,33 +43,28 @@ public class MainController {
 		}
 
 		Model model = new Model(player, this);
+		ThemeSwitcher themeSwitcher = new ThemeSwitcher();
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/window.fxml"));
 			loader.setController(this);
 			loader.setControllerFactory(type -> {
 				if (type.equals(MenuController.class))
-					return new MenuController(model);
+					return new MenuController(model, themeSwitcher);
 				if (type.equals(TrackInfoController.class))
 					return new TrackInfoController(model);
 				if (type.equals(PlayerControlsController.class)) {
-					playerControlsController = new PlayerControlsController(model);
+					playerControlsController = new PlayerControlsController(model, themeSwitcher);
 					return playerControlsController;
 				}
 				if (type.equals(SidebarController.class))
-					return new SidebarController(model);
+					return new SidebarController(model, themeSwitcher);
 				throw new IllegalArgumentException("Unexpected controller type: " + type);
 			});
 
-			Scene currentScene = new Scene(loader.load());
-
 			// configure layout
+			Scene currentScene = new Scene(loader.load());
 			currentScene.getStylesheets().add(getClass().getResource("/themes/basic_config.css").toString());
-
-			// configure default/startup theme
-			String startupTheme = PreferenceManager.getTheme();
-			currentScene.getStylesheets()
-					.add(ResourceManager.getStyleSheet(startupTheme == null ? "default" : startupTheme));
-
+			themeSwitcher.setStylesheets(currentScene.getStylesheets());
 			currentStage.setScene(currentScene);
 		} catch (IOException e) {
 			System.err.println("Failed to load fxml");
@@ -78,6 +72,7 @@ public class MainController {
 		}
 
 		player.notifyListeners();
+		themeSwitcher.update(PreferenceManager.getTheme());
 	}
 
 	@FXML
@@ -85,13 +80,6 @@ public class MainController {
 		// make sure all close events are handled the same way
 		currentStage.setOnCloseRequest(event -> quit());
 		currentStage.setOnHidden(event -> quit());
-	}
-
-	/**
-	 * Set the theme via pass-through to PlayerControlsController
-	 */
-	public void setTheme(String theme) {
-		playerControlsController.setTheme(theme);
 	}
 
 	public void showStage() {
@@ -102,7 +90,6 @@ public class MainController {
 	 * Ensure preferences are up to date
 	 */
 	private void writePreferences() {
-		PreferenceManager.setTheme(playerControlsController.getTheme());
 		PreferenceManager.setDirectory(player.getDirectory());
 		PreferenceManager.setShuffle(player.getShuffled());
 	}
