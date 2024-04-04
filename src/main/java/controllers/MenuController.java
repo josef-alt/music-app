@@ -60,7 +60,7 @@ public class MenuController {
 		about_button.setOnAction(event -> new AboutPage(parentStage));
 		stats_button.setOnAction(event -> new StatsPage(parentStage, model.getPlayer()));
 
-		quit_button.setOnAction(event -> model.getMainController().getStage().close());
+		quit_button.setOnAction(event -> model.getMainController().quit());
 	}
 
 	/**

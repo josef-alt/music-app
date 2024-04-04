@@ -27,7 +27,7 @@ public class PlayerControlsController {
 	@FXML
 	private Slider time_slider;
 
-	ThemeSwitcher switcher;
+	private ThemeSwitcher switcher;
 	private Model model;
 
 	public PlayerControlsController(Model model, ThemeSwitcher switcher) {

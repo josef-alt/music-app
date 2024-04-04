@@ -77,9 +77,7 @@ public class MainController {
 
 	@FXML
 	public void initialize() {
-		// make sure all close events are handled the same way
 		currentStage.setOnCloseRequest(event -> quit());
-		currentStage.setOnHidden(event -> quit());
 	}
 
 	public void showStage() {
