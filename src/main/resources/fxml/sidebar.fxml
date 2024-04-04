@@ -1,7 +1,47 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<VBox fx:controller="controllers.SidebarController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
-    <ListView fx:id="sideview_songs" />
-</VBox>
+<TabPane fx:controller="controllers.SidebarController"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20">
+  <tabs>
+    <Tab text="Q">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0">
+          <children>
+            <ListView fx:id="sideview_songs" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="artists_tab">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0">
+          <children>
+            <ListView fx:id="artists_list" />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="albums_tab">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" >
+          <children>
+            <ListView fx:id="albums_list" />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="genres_tab">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" >
+          <children>
+            <ListView fx:id="genres_list" />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
