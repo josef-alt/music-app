@@ -2,7 +2,6 @@ package util;
 
 import java.io.File;
 import java.net.URISyntaxException;
-
 import java.util.ArrayList;
 
 import javafx.scene.image.Image;
@@ -36,6 +35,9 @@ public class ResourceManager {
 		ArrayList<String> themes = new ArrayList<>();
 		try {
 			File[] folders = (new File(ResourceManager.class.getResource("/themes/").toURI())).listFiles();
+			if (folders == null)
+				folders = new File("themes/").listFiles();
+
 			for (File theme : folders) {
 				if (!theme.isDirectory()) {
 					continue;
