@@ -3,6 +3,8 @@ package media;
 import java.util.*;
 import java.util.Map.*;
 
+import javafx.collections.*;
+
 /**
  * Summarize the active library.
  *
@@ -15,43 +17,68 @@ public class LibraryStats {
 
 	private int totalSongs;
 	private int totalDuration;
-	private Map<String, Set<String>> albums_by_artist, songs_by_artist;
-	private HashSet<String> artists;
+
+	private ObservableMap<String, Set> songs_by_artist, songs_by_genre, albums_by_artist;
+	private ObservableList<String> arts, albs, gens;
 
 	public LibraryStats() {
-		songs_by_artist = new HashMap<>();
-		albums_by_artist = new HashMap<>();
-		artists = new HashSet<>();
+		arts = FXCollections.observableArrayList();
+		albs = FXCollections.observableArrayList();
+		gens = FXCollections.observableArrayList();
+
+		songs_by_artist = FXCollections.observableHashMap();
+		songs_by_genre = FXCollections.observableHashMap();
+		albums_by_artist = FXCollections.observableHashMap();
+
+		clear();
+	}
+
+	/**
+	 * Clear function to ensure that the observable collections stay connected
+	 */
+	public void clear() {
+		longestSong = null;
+		shortestSong = null;
+		totalSongs = 0;
+		totalDuration = 0;
+
+		songs_by_artist.clear();
+		songs_by_genre.clear();
+		albums_by_artist.clear();
+
+		arts.clear();
+		albs.clear();
+		gens.clear();
 	}
 
 	/**
 	 * Add a new song to the current summary.
 	 */
 	public void addSong(Song song) {
-		if (song.getAlbum() != null) {
-			if (song.getArtist() != null) {
-				albums_by_artist.putIfAbsent(song.getArtist(), new HashSet<>());
-				albums_by_artist.get(song.getArtist()).add(song.getAlbum());
-			} else {
-				albums_by_artist.putIfAbsent("unknown artist", new HashSet<>());
-				albums_by_artist.get("unknown artist").add(song.getAlbum());
-			}
+		// ensure sorted list of each attribute also contains the unknown variant
+		int index = Collections.binarySearch(gens, song.getGenre());
+		if (index < 0) {
+			gens.add(~index, song.getGenre());
+		}
+		index = Collections.binarySearch(albs, song.getAlbum());
+		if (index < 0) {
+			albs.add(~index, song.getAlbum());
+		}
+		index = Collections.binarySearch(arts, song.getArtist());
+		if (index < 0) {
+			arts.add(~index, song.getArtist());
 		}
 
-		if (song.getTitle() != null) {
-			if (song.getArtist() != null) {
-				songs_by_artist.putIfAbsent(song.getArtist(), new HashSet<>());
-				songs_by_artist.get(song.getArtist()).add(song.getTitle());
-			} else {
-				songs_by_artist.putIfAbsent("unknown artist", new HashSet<>());
-				songs_by_artist.get("unknown artist").add(song.getTitle());
-			}
-		}
+		songs_by_artist.putIfAbsent(song.getArtist(), FXCollections.observableSet());
+		songs_by_artist.get(song.getArtist()).add(song);
 
-		if (song.getArtist() != null) {
-			artists.add(song.getArtist());
-		}
+		songs_by_genre.putIfAbsent(song.getGenre(), FXCollections.observableSet());
+		songs_by_genre.get(song.getGenre()).add(song);
 
+		albums_by_artist.putIfAbsent(song.getArtist(), FXCollections.observableSet());
+		albums_by_artist.get(song.getArtist()).add(song.getAlbum());
+
+		// compute extrema
 		if (shortestSong == null || song.getDuration() < shortestSong.getDuration()) {
 			shortestSong = song;
 		}
@@ -70,23 +97,26 @@ public class LibraryStats {
 	}
 
 	public int getTotalAlbums() {
-		return albums_by_artist.entrySet().stream().map(E -> E.getValue().size()).reduce(0, Integer::sum);
+		return albs.size();
 	}
 
 	public int getTotalArtists() {
-		return artists.size();
+		return arts.size();
 	}
 
 	public int getTotalDuration() {
 		return totalDuration;
 	}
 
-	private Optional<Entry<String, Set<String>>> getMax(Map<String, Set<String>> map) {
+	/**
+	 * Find the key with the largest corresponding set
+	 */
+	private Optional<Entry<String, Set>> getMax(Map<String, Set> map) {
 		return map.entrySet().stream().max(Comparator.comparing(entry -> entry.getValue().size()));
 	}
 
-	private String getMaxKey(Map<String, Set<String>> map) {
-		Optional<Entry<String, Set<String>>> max = getMax(map);
+	private String getMaxKey(Map<String, Set> map) {
+		Optional<Entry<String, Set>> max = getMax(map);
 		if (max.isPresent()) {
 			return max.get().getKey();
 		} else {
@@ -94,8 +124,8 @@ public class LibraryStats {
 		}
 	}
 
-	private int getMaxSize(Map<String, Set<String>> map) {
-		Optional<Entry<String, Set<String>>> max = getMax(map);
+	private int getMaxSize(Map<String, Set> map) {
+		Optional<Entry<String, Set>> max = getMax(map);
 		if (max.isPresent()) {
 			return max.get().getValue().size();
 		} else {
@@ -125,5 +155,17 @@ public class LibraryStats {
 
 	public Song getShortest() {
 		return shortestSong;
+	}
+
+	public ObservableList<String> getAllArtists() {
+		return arts;
+	}
+
+	public ObservableList<String> getAllAlbums() {
+		return albs;
+	}
+
+	public ObservableList<String> getAllGenres() {
+		return gens;
 	}
 }
