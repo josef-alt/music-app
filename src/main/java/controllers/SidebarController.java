@@ -1,10 +1,12 @@
 package controllers;
 
-import javafx.collections.ObservableList;
+import javafx.application.*;
+import javafx.beans.value.*;
+import javafx.collections.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import media.*;
 import util.ThemeSwitcher;
 
 /**
@@ -13,10 +15,13 @@ import util.ThemeSwitcher;
  */
 public class SidebarController {
 	@FXML
-	private ListView sideview_songs;
+	private ListView active_queue, artists_list, albums_list, genres_list, playlists_list;
 
 	@FXML
-	private Tab artists_tab, albums_tab, genres_tab;
+	private Tab artists_tab, albums_tab, genres_tab, playlists_tab;
+
+	@FXML
+	private TabPane tab_pane;
 
 	private Model model;
 	private ThemeSwitcher switcher;
@@ -41,18 +46,67 @@ public class SidebarController {
 		genres_tab.setGraphic(genre_icon);
 
 		// link user selections to player
-		sideview_songs.getSelectionModel().selectedIndexProperty().addListener((obs, old, sel) -> {
+		active_queue.getSelectionModel().selectedIndexProperty().addListener((obs, old, sel) -> {
 			int index = sel.intValue();
 			if (index >= 0)
 				model.getPlayer().setIndex(index);
 		});
 
-		sideview_songs.setItems(model.getPlayer().getObservableList());
-		sideview_songs.setPrefHeight(400);
+		active_queue.setItems(model.getPlayer().getQueue());
+		active_queue.setPrefHeight(400);
 
 		// link auto-play to list view
 		model.getPlayer().addListener(() -> {
-			sideview_songs.getSelectionModel().select(model.getPlayer().getSong());
+			active_queue.getSelectionModel().select(model.getPlayer().getSong());
+		});
+
+		// TODO lots of very simliar code below
+		artists_list.setPrefHeight(400);
+		artists_list.setItems(model.getPlayer().getStats().getAllArtists());
+		artists_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
+			if (selected != null) {
+				model.getPlayer().playArtist((String) selected);
+				Platform.runLater(() -> {
+					tab_pane.getSelectionModel().select(0);
+					artists_list.getSelectionModel().clearSelection();
+				});
+			}
+		});
+
+		albums_list.setPrefHeight(400);
+		albums_list.setItems(model.getPlayer().getStats().getAllAlbums());
+		albums_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
+			if (selected != null) {
+				model.getPlayer().playAlbum((String) selected);
+				Platform.runLater(() -> {
+					tab_pane.getSelectionModel().select(0);
+					albums_list.getSelectionModel().clearSelection();
+				});
+			}
+		});
+
+		genres_list.setPrefHeight(400);
+		genres_list.setItems(model.getPlayer().getStats().getAllGenres());
+		genres_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
+			if (selected != null) {
+				model.getPlayer().playGenre((String) selected);
+				Platform.runLater(() -> {
+					tab_pane.getSelectionModel().select(0);
+					genres_list.getSelectionModel().clearSelection();
+				});
+			}
+		});
+
+		playlists_list.setPrefHeight(400);
+		playlists_list.setItems(model.getPlayer().getAllPlaylists());
+		playlists_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
+			if (selected != null) {
+				model.getPlayer().playPlaylist((Playlist) selected);
+				Platform.runLater(() -> {
+					tab_pane.getSelectionModel().select(0);
+					playlists_list.getSelectionModel().clearSelection();
+				});
+			}
 		});
 	}
 }
