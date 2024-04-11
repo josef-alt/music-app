@@ -2,6 +2,7 @@ package media;
 
 import java.io.File;
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.*;
 
 import javafx.beans.value.ChangeListener;
@@ -38,7 +39,12 @@ public class Player {
 
 	public void setDirectory(File dir) {
 		this.directory = dir;
-		this.library = new Library(dir.toPath());
+
+		if (library == null)
+			this.library = new Library(dir.toPath());
+		else
+			this.library.setDirectory(dir.toPath());
+
 		this.libraryLength = library.getNumberOfTracks();
 		if (libraryLength > 0) {
 			sequence = IntStream.range(0, libraryLength).boxed()
@@ -50,6 +56,7 @@ public class Player {
 				nowPlaying.clear();
 				nowPlaying.addAll(sequence.stream().map(index -> library.getTrack(index)).toList());
 			}
+
 
 			if (shuffled) {
 				shuffle();
@@ -73,7 +80,48 @@ public class Player {
 
 	public void inorder() {
 		this.shuffled = false;
-		nowPlaying.sort(Comparator.comparing(song -> song.hasTitle() ? song.getTitle() : "unknown"));
+		nowPlaying.sort(Comparator.comparing(Song::getTitle));
+		songIndex = -1;
+		nextSong();
+	}
+
+	public void playArtist(String artist) {
+		playAttribute(track -> track.getArtist().equals(artist));
+	}
+
+	public void playAlbum(String album) {
+		playAttribute(track -> track.getAlbum().equals(album));
+	}
+
+	public void playGenre(String genre) {
+		playAttribute(track -> track.getGenre().equals(genre));
+	}
+
+	public void playAttribute(Predicate<Song> filter) {
+		nowPlaying.clear();
+		for (int index = 0; index < library.getNumberOfTracks(); ++index) {
+			Song track = library.getTrack(index);
+			if (filter.test(track)) {
+				nowPlaying.add(track);
+			}
+		}
+
+		if (shuffled) {
+			Collections.shuffle(nowPlaying);
+		}
+
+		songIndex = -1;
+		nextSong();
+	}
+
+	public void playPlaylist(Playlist p) {
+		nowPlaying.clear();
+		nowPlaying.addAll(p.getSongs());
+
+		if (shuffled) {
+			Collections.shuffle(nowPlaying);
+		}
+
 		songIndex = -1;
 		nextSong();
 	}
@@ -137,6 +185,10 @@ public class Player {
 
 	public Song getSong() {
 		return currentSong;
+	}
+
+	public ObservableList<Playlist> getAllPlaylists() {
+		return library.getAllPlaylists();
 	}
 
 	public boolean isPaused() {
