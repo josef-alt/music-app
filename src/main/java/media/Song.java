@@ -27,6 +27,7 @@ public class Song {
 	private String title;
 	private String album;
 	private String artist;
+	private String genre;
 	private byte[] cover;
 	private File source;
 	private int duration;
@@ -71,6 +72,10 @@ public class Song {
 				title = source.getName();
 			}
 
+			if (tag.hasField(FieldKey.GENRE)) {
+				genre = tag.getFirst(FieldKey.GENRE);
+			}
+
 			duration = af.getAudioHeader().getTrackLength();
 		}
 
@@ -91,7 +96,7 @@ public class Song {
 	}
 
 	public String getTitle() {
-		return title;
+		return hasTitle() ? title : "Unknown Title";
 	}
 
 	public boolean hasAlbum() {
@@ -99,7 +104,7 @@ public class Song {
 	}
 
 	public String getAlbum() {
-		return album;
+		return hasAlbum() ? album : "Unknown Album";
 	}
 
 	public boolean hasArtist() {
@@ -107,7 +112,15 @@ public class Song {
 	}
 
 	public String getArtist() {
-		return artist;
+		return hasArtist() ? artist : "Unknown Artist";
+	}
+
+	public boolean hasGenre() {
+		return genre != null && !genre.isBlank();
+	}
+
+	public String getGenre() {
+		return hasGenre() ? genre : "Unknown Genre";
 	}
 
 	public boolean hasCover() {
