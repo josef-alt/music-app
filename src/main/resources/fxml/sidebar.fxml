@@ -5,13 +5,13 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane fx:controller="controllers.SidebarController"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20">
+<TabPane fx:controller="controllers.SidebarController" fx:id="tab_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20">
   <tabs>
-    <Tab text="Q">
+    <Tab fx:id="queue_tab" text="Q">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0">
           <children>
-            <ListView fx:id="sideview_songs" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ListView fx:id="active_queue" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
           </children>
         </AnchorPane>
       </content>
@@ -20,7 +20,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0">
           <children>
-            <ListView fx:id="artists_list" />
+            <ListView fx:id="artists_list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
           </children>
         </AnchorPane>
       </content>
@@ -29,7 +29,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" >
           <children>
-            <ListView fx:id="albums_list" />
+            <ListView fx:id="albums_list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
           </children>
         </AnchorPane>
       </content>
@@ -38,7 +38,16 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" >
           <children>
-            <ListView fx:id="genres_list" />
+            <ListView fx:id="genres_list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+          </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="playlists_tab">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" >
+          <children>
+            <ListView fx:id="playlists_list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
           </children>
         </AnchorPane>
       </content>
