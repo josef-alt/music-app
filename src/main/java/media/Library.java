@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * Contains everything necessary for managing the music library.
  * 
@@ -19,6 +22,7 @@ public class Library {
 	private Song[] files;
 	private Path directory;
 	private LibraryStats stats;
+	private ObservableList<Playlist> playlists;
 
 	// only supporting m4a files for now
 	private static final PathMatcher matcher = FileSystems.getDefault()
@@ -29,6 +33,12 @@ public class Library {
 	}
 
 	public Library(Path dir) {
+		this.stats = new LibraryStats();
+		playlists = FXCollections.observableArrayList();
+		setDirectory(dir);
+	}
+
+	public void setDirectory(Path dir) {
 		this.directory = dir;
 
 		try {
@@ -45,9 +55,9 @@ public class Library {
 	 * Filters out unsupported types
 	 */
 	private void loadFiles() throws IOException {
-		stats = new LibraryStats();
+		stats.clear();// = new LibraryStats();
+		ArrayList<Song> songs = new ArrayList<>();
 		if (Files.isDirectory(directory)) {
-			ArrayList<Song> songs = new ArrayList<>();
 			for (Path path : Files.newDirectoryStream(directory)) {
 				if (matcher.matches(path)) {
 					Song newSong = new Song(path.toFile());
@@ -55,15 +65,17 @@ public class Library {
 					songs.add(newSong);
 				}
 			}
-			this.files = songs.toArray(Song[]::new);
 		} else if (Files.isRegularFile(directory)) {
 			if (matcher.matches(directory)) {
-				this.files = new Song[] { new Song(directory.toFile()) };
-				stats.addSong(files[0]);
-			} else {
-				this.files = new Song[0];
+				songs.add(new Song(directory.toFile()));
+				stats.addSong(songs.get(0));
 			}
 		}
+		this.files = songs.toArray(Song[]::new);
+
+		// TODO playlist support
+		playlists.clear();
+		playlists.add(new Playlist("All Songs", songs));
 	}
 
 	public int getNumberOfTracks() {
@@ -76,6 +88,10 @@ public class Library {
 
 	public LibraryStats getStats() {
 		return stats;
+	}
+
+	public ObservableList<Playlist> getAllPlaylists() {
+		return playlists;
 	}
 
 	public String toString() {
