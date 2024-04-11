@@ -67,7 +67,7 @@ public class Player {
 		notifyListeners();
 	}
 
-	public ObservableList<Song> getObservableList() {
+	public ObservableList<Song> getQueue() {
 		return nowPlaying;
 	}
 
@@ -162,7 +162,7 @@ public class Player {
 		if (libraryLength == 0) {
 			return;
 		}
-		songIndex = (songIndex + 1) % libraryLength;
+		songIndex = (songIndex + 1) % nowPlaying.size();
 
 		// currentSong = library.getTrack(songIndex);
 		currentSong = nowPlaying.get(songIndex);
@@ -176,7 +176,7 @@ public class Player {
 		if (libraryLength == 0) {
 			return;
 		}
-		songIndex = (songIndex - 1 + libraryLength) % libraryLength;
+		songIndex = (songIndex - 1 + libraryLength) % nowPlaying.size();
 
 		// currentSong = library.getTrack(songIndex);
 		currentSong = nowPlaying.get(songIndex);
