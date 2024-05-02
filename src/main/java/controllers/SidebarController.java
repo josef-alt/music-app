@@ -77,9 +77,10 @@ public class SidebarController {
 
 		albums_list.setPrefHeight(400);
 		albums_list.setItems(model.getPlayer().getStats().getAllAlbums());
+		albums_list.setCellFactory(new AlbumCellFactory());
 		albums_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
 			if (selected != null) {
-				model.getPlayer().playAlbum((String) selected);
+				model.getPlayer().playAlbum((Album) selected);
 				Platform.runLater(() -> {
 					tab_pane.getSelectionModel().select(0);
 					albums_list.getSelectionModel().clearSelection();

@@ -1,0 +1,23 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="javafx.scene.control.ListCell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+  <graphic>
+    <VBox>
+      <children>        
+        <Label fx:id="albumNameLabel">
+          <font>
+            <Font name="Roboto Light" size="12" />
+          </font>
+        </Label>
+        
+        <Label fx:id="artistLabel">
+          <font>
+            <Font name="Roboto Light" size="11" />            
+          </font>
+        </Label>
+      </children>
+    </VBox>
+  </graphic>
+</fx:root>
