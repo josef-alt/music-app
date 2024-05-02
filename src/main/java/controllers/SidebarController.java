@@ -1,5 +1,6 @@
 package controllers;
 
+import cells.*;
 import javafx.application.*;
 import javafx.beans.value.*;
 import javafx.collections.*;
@@ -54,6 +55,7 @@ public class SidebarController {
 
 		active_queue.setItems(model.getPlayer().getQueue());
 		active_queue.setPrefHeight(400);
+		active_queue.setCellFactory(new SongCellFactory());
 
 		// link auto-play to list view
 		model.getPlayer().addListener(() -> {
