@@ -19,7 +19,8 @@ public class LibraryStats {
 	private int totalDuration;
 
 	private ObservableMap<String, Set> songs_by_artist, songs_by_genre, albums_by_artist;
-	private ObservableList<String> arts, albs, gens;
+	private ObservableList<String> arts, gens;
+	private ObservableList<Album> albs;
 
 	public LibraryStats() {
 		arts = FXCollections.observableArrayList();
@@ -161,7 +162,7 @@ public class LibraryStats {
 		return arts;
 	}
 
-	public ObservableList<String> getAllAlbums() {
+	public ObservableList<Album> getAllAlbums() {
 		return albs;
 	}
 

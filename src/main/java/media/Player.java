@@ -89,7 +89,7 @@ public class Player {
 		playAttribute(track -> track.getArtist().equals(artist));
 	}
 
-	public void playAlbum(String album) {
+	public void playAlbum(Album album) {
 		playAttribute(track -> track.getAlbum().equals(album));
 	}
 

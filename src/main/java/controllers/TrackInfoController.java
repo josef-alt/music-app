@@ -44,7 +44,7 @@ public class TrackInfoController {
 		Song currentlyPlaying = model.getPlayer().getSong();
 
 		if (currentlyPlaying.hasAlbum()) {
-			album_name.setText(currentlyPlaying.getAlbum());
+			album_name.setText(currentlyPlaying.getAlbum().getAlbumName());
 		} else {
 			album_name.setText("Unknown Album");
 		}

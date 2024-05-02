@@ -3,6 +3,7 @@ package media;
 import java.io.File;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.*;
 import java.util.logging.*;
 
 import org.jaudiotagger.audio.AudioFile;
@@ -25,7 +26,7 @@ import javafx.scene.media.*;
  */
 public class Song {
 	private String title;
-	private String album;
+	private Album album;
 	private String artist;
 	private String genre;
 	private byte[] cover;
@@ -54,8 +55,9 @@ public class Song {
 			AudioFile af = AudioFileIO.read(source);
 			Tag tag = af.getTag();
 
+			album = new Album();
 			if (tag.hasField(FieldKey.ALBUM)) {
-				album = tag.getFirst(FieldKey.ALBUM);
+				album.setAlbumName(tag.getFirst(FieldKey.ALBUM));
 			}
 
 			if (tag.hasField(FieldKey.COVER_ART)) {
@@ -64,6 +66,7 @@ public class Song {
 
 			if (tag.hasField(FieldKey.ARTIST)) {
 				artist = tag.getFirst(FieldKey.ARTIST);
+				album.setAlbumArtist(artist);
 			}
 
 			if (tag.hasField(FieldKey.TITLE)) {
@@ -100,11 +103,11 @@ public class Song {
 	}
 
 	public boolean hasAlbum() {
-		return album != null && !album.isBlank();
+		return album != null && !album.getAlbumName().isBlank();
 	}
 
-	public String getAlbum() {
-		return hasAlbum() ? album : "Unknown Album";
+	public Album getAlbum() {
+		return album;
 	}
 
 	public boolean hasArtist() {
