@@ -38,13 +38,16 @@ public class SidebarController {
 		ImageView artist_icon = new ImageView();
 		ImageView album_icon = new ImageView();
 		ImageView genre_icon = new ImageView();
+		ImageView playlist_icon = new ImageView();
 		switcher.addView(artist_icon, "artist", 20);
 		switcher.addView(album_icon, "album", 20);
 		switcher.addView(genre_icon, "genre", 20);
+		switcher.addView(playlist_icon, "playlist", 20);
 
 		artists_tab.setGraphic(artist_icon);
 		albums_tab.setGraphic(album_icon);
 		genres_tab.setGraphic(genre_icon);
+		playlists_tab.setGraphic(playlist_icon);
 
 		// link user selections to player
 		active_queue.getSelectionModel().selectedIndexProperty().addListener((obs, old, sel) -> {
