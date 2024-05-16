@@ -57,6 +57,7 @@ public class Library {
 	private void loadFiles() throws IOException {
 		stats.clear();// = new LibraryStats();
 		ArrayList<Song> songs = new ArrayList<>();
+
 		if (Files.isDirectory(directory)) {
 			for (Path path : Files.newDirectoryStream(directory)) {
 				if (matcher.matches(path)) {
@@ -95,8 +96,7 @@ public class Library {
 	}
 
 	public String toString() {
-		String list = Arrays.stream(files).map(Song::toString)
-				.collect(Collectors.joining(", ", "{", "}"));
+		String list = Arrays.stream(files).map(Song::toString).collect(Collectors.joining(", ", "{", "}"));
 
 		return String.format("%s has %d files: %s", directory.toAbsolutePath().toString(), files.length, list);
 	}
