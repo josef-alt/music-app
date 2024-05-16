@@ -32,6 +32,7 @@ public class Player {
 
 	// TODO decide whether to keep this or not
 	public Player(boolean shuffle) {
+		nowPlaying = FXCollections.observableArrayList();
 		this.paused = true;
 		setDirectory(new File("."));
 		this.shuffled = shuffle;
@@ -51,12 +52,11 @@ public class Player {
 					.collect(Collectors.toCollection(ArrayList<Integer>::new));
 			if (nowPlaying == null) {
 				nowPlaying = FXCollections
-					.observableArrayList(sequence.stream().map(index -> library.getTrack(index)).toList());
+						.observableArrayList(sequence.stream().map(index -> library.getTrack(index)).toList());
 			} else {
 				nowPlaying.clear();
 				nowPlaying.addAll(sequence.stream().map(index -> library.getTrack(index)).toList());
 			}
-
 
 			if (shuffled) {
 				shuffle();
@@ -115,15 +115,17 @@ public class Player {
 	}
 
 	public void playPlaylist(Playlist p) {
-		nowPlaying.clear();
-		nowPlaying.addAll(p.getSongs());
+		if (nowPlaying != null) {
+			nowPlaying.clear();
+			nowPlaying.addAll(p.getSongs());
 
-		if (shuffled) {
-			Collections.shuffle(nowPlaying);
+			if (shuffled) {
+				Collections.shuffle(nowPlaying);
+			}
+
+			songIndex = -1;
+			nextSong();
 		}
-
-		songIndex = -1;
-		nextSong();
 	}
 
 	/**
