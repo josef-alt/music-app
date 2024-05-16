@@ -79,6 +79,11 @@ public class PlayerControlsController {
 	 * Configure listeners to form link between slider and player
 	 */
 	public void configureSlider() {
+		if (model.getPlayer() == null || model.getPlayer().getSong() == null) {
+			System.err.println("failed to configure slider");
+			return;
+		}
+
 		time_slider.setMax(model.getPlayer().getSong().getDuration());
 		time_slider.setMin(0);
 
