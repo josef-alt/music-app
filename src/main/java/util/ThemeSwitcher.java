@@ -48,25 +48,35 @@ public class ThemeSwitcher {
 	 * Update the theme application wide.
 	 */
 	public void update(String theme) {
-		// update icons
-		play = ResourceManager.getImage(String.format("/themes/%s/play.png", theme), 50);
-		pause = ResourceManager.getImage(String.format("/themes/%s/pause.png", theme), 50);
-		listen.forEach(Runnable::run);
-		for (Mapping icon : icons) {
-			icon.view.setImage(
-					ResourceManager.getImage(String.format("/themes/%s/%s.png", theme, icon.name), icon.size));
-		}
+		// cache old information
+		String old_theme = PreferenceManager.getTheme();
 
-		// update stylesheets
-		if (stylesheets != null) {
-			if (stylesheets.size() > 1) {
-				stylesheets.remove(1);
+		// attempt theme switch
+		try {
+			play = ResourceManager.getImage(String.format("/themes/%s/play.png", theme), 50);
+			pause = ResourceManager.getImage(String.format("/themes/%s/pause.png", theme), 50);
+			listen.forEach(Runnable::run);
+			for (Mapping icon : icons) {
+				icon.view.setImage(
+						ResourceManager.getImage(String.format("/themes/%s/%s.png", theme, icon.name), icon.size));
 			}
-			stylesheets.add(ResourceManager.getStyleSheet(theme));
-		}
 
-		// update preferences
-		PreferenceManager.setTheme(theme);
+			// update stylesheets
+			if (stylesheets != null) {
+				if (stylesheets.size() > 1) {
+					stylesheets.remove(1);
+				}
+				stylesheets.add(ResourceManager.getStyleSheet(theme));
+			}
+
+			// update preferences
+			PreferenceManager.setTheme(theme);
+
+		} catch (NullPointerException e) {
+			// revert changes
+			System.err.println("failed to load " + theme);
+			update(old_theme);
+		}
 	}
 
 	public Image getPlayIcon() {
