@@ -47,22 +47,19 @@ public class Player {
 			this.library.setDirectory(dir.toPath());
 
 		this.libraryLength = library.getNumberOfTracks();
-		if (libraryLength > 0) {
-			sequence = IntStream.range(0, libraryLength).boxed()
-					.collect(Collectors.toCollection(ArrayList<Integer>::new));
-			if (nowPlaying == null) {
-				nowPlaying = FXCollections
-						.observableArrayList(sequence.stream().map(index -> library.getTrack(index)).toList());
-			} else {
-				nowPlaying.clear();
-				nowPlaying.addAll(sequence.stream().map(index -> library.getTrack(index)).toList());
-			}
+		sequence = IntStream.range(0, libraryLength).boxed().collect(Collectors.toCollection(ArrayList<Integer>::new));
+		if (nowPlaying == null) {
+			nowPlaying = FXCollections
+					.observableArrayList(sequence.stream().map(index -> library.getTrack(index)).toList());
+		} else {
+			nowPlaying.clear();
+			nowPlaying.addAll(sequence.stream().map(index -> library.getTrack(index)).toList());
+		}
 
-			if (shuffled) {
-				shuffle();
-			} else {
-				inorder();
-			}
+		if (shuffled) {
+			shuffle();
+		} else {
+			inorder();
 		}
 		notifyListeners();
 	}
