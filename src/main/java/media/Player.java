@@ -56,6 +56,14 @@ public class Player {
 			nowPlaying.addAll(sequence.stream().map(index -> library.getTrack(index)).toList());
 		}
 
+		// clear current player
+		currentSong = null;
+		songIndex = -1;
+		paused = true;
+		if (mediaPlayer != null) {
+			mediaPlayer.dispose();
+		}
+
 		if (shuffled) {
 			shuffle();
 		} else {

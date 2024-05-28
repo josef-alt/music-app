@@ -38,7 +38,13 @@ public class TrackInfoController {
 	 * Update track information in user interface.
 	 */
 	void setTrackInformation() {
+		// if no song is playing, load up default values
+		System.out.println("update");
 		if (model.getPlayer() == null || model.getPlayer().getSong() == null) {
+			song_name.setText("No Song Loaded");
+			artist_name.setText("No Artist");
+			album_name.setText("No Album");
+			album_art.setImage(Song.getDefaultCover());
 			return;
 		}
 		Song currentlyPlaying = model.getPlayer().getSong();

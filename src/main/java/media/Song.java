@@ -36,6 +36,7 @@ public class Song {
 	private static final Image DEFAULT_ALBUM_COVER = new Image(Song.class.getResourceAsStream("/img/cd.png"));;
 	static {
 		// https://stackoverflow.com/q/50778442
+		System.out.println("disable logging");
 		Logger[] pin = new Logger[] { Logger.getLogger("org.jaudiotagger") };
 
 		for (Logger l : pin)
@@ -137,6 +138,10 @@ public class Song {
 	public Image getCover() {
 		if (hasCover())
 			return new Image(new ByteArrayInputStream(cover));
+		return DEFAULT_ALBUM_COVER;
+	}
+
+	public static Image getDefaultCover() {
 		return DEFAULT_ALBUM_COVER;
 	}
 
