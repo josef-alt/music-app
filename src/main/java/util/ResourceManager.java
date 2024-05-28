@@ -1,7 +1,10 @@
 package util;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.io.File;
-import java.net.URISyntaxException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.scene.image.Image;
@@ -34,21 +37,36 @@ public class ResourceManager {
 	public static String[] loadThemes() {
 		ArrayList<String> themes = new ArrayList<>();
 		try {
-			File[] folders = (new File(ResourceManager.class.getResource("/themes/").toURI())).listFiles();
-			if (folders == null)
-				folders = new File("themes/").listFiles();
-
-			for (File theme : folders) {
-				if (!theme.isDirectory()) {
-					continue;
+			// loading from the classpath
+			InputStream inputStream = ResourceManager.class.getResourceAsStream("/themes");
+			if (inputStream != null) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+				for (String theme = reader.readLine(); theme != null; theme = reader.readLine()) {
+					// for now i'm going to assume there is nothing but themes and basic_config.css
+					if (!theme.endsWith(".css")) {
+						themes.add(theme);
+					}
 				}
-				themes.add(theme.getName());
 			}
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			return themes.stream().toArray(String[]::new);
+
+			// if that fails, load from the local file system
+			if (themes.isEmpty()) {
+				File themesFolder = new File("themes/");
+				File[] folders = themesFolder.listFiles();
+				if (folders != null) {
+					for (File theme : folders) {
+						if (theme.isDirectory()) {
+							themes.add(theme.getName());
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			// returning an empty array will be fine
+			// just won't be able to switch theme later
+			System.err.println("Error accessing themes: " + e.getMessage());
 		}
+
+		return themes.stream().toArray(String[]::new);
 	}
 }
