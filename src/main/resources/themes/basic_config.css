@@ -1,0 +1,71 @@
+.root {
+  -dark      : #aaaaaa;
+  -standard  : #444444;
+  -bright    : #888888;
+  -text-color: #000000;
+  
+  -fx-text-background-color    : -text-color;
+  -highlight-effect            : dropshadow(two-pass-box, rgba(255, 255, 255, 1.0), 20, 0.5, 0, 0);
+  -fx-background               : -dark;
+  -fx-base                     : -standard;
+  -fx-font-family              : "Roboto Light";
+  -fx-font-weight              : lighter;
+  -fx-font-size                : 12pt;  
+  -fx-selection-bar            : -standard;
+  -fx-selection-bar-non-focused: derive(-standard, 20%);
+}
+
+.menu-bar {
+  -fx-background-color: -standard, -bright;
+  -fx-font-size: 10pt;
+}
+.menu-bar .menu:selected {
+  -fx-background      : -bright;
+  -fx-background-color: -standard;
+  -fx-text-fill       : -text-color;
+}
+.menu:pressed {
+  -fx-background      : -standard;
+  -fx-background-color: -standard;
+  -fx-text-fill       : -text-color;
+}
+.menu:hover > .label {
+  -fx-background-color: -standard;
+}
+
+.button {
+  -fx-background-color: transparent;
+}
+
+.list-view, .split-pane { 
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
+.list-view {
+	-fx-background-color: -dark;
+	}
+.list-cell {
+  -fx-background-color: -dark;
+}
+.list-cell:filled:hover {
+  -fx-background-color: -bright;
+}
+.list-cell:selected {
+  -fx-background-color: -standard;
+}
+
+.tab-label {
+    -fx-text-fill: -bright;
+}
+.tab-pane:top *.tab-header-area {
+  -fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
+  -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
+  -fx-background-color: -dark;  
+}
+.tab-pane .tab-header-area .tab-header-background {
+  -fx-opacity: 0;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:top {
+  -fx-pref-height: 25px;
+  -fx-pref-width: 37px;
+}

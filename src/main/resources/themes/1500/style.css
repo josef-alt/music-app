@@ -1,0 +1,73 @@
+.root {
+  -dark      : #29252c;
+  -standard  : #36485e;
+  -bright    : #333146;
+  -text-color: #9effa9;
+}
+
+.context-menu {
+  -fx-background-color: -bright;
+}
+
+.titled-pane {
+  -fx-mark-color          : -standard;
+  -fx-mark-highlight-color: transparent;
+  -fx-text-fill           : -text-color;
+}
+.titled-pane:focused > .title > .arrow-button > .arrow {
+  -fx-mark-color : white;
+  -fx-focus-color: transparent;
+}
+.titled-pane > .title {
+  -fx-background-color : -standard, -bright;
+  -fx-background-insets: 0, 1 0 0 0;
+}
+.titled-pane >.title:hover {
+  -fx-background-color: -standard, derive(-bright, -10%);
+}
+
+.button:pressed {
+  -fx-body-color  : -standard;
+  -fx-inner-border: derive(-standard, 10%);
+}
+.button:disabled {
+  -fx-body-color: -dark;
+}
+
+.toggle-button{
+  -fx-text-fill        : -text-color;
+}
+.toggle-button:pressed {
+  -fx-body-color  : -standard;
+  -fx-inner-border: derive(-standard, 10%);
+}
+.toggle-button:selected {
+  -fx-body-color      : -standard;
+  -fx-inner-border    : derive(-standard, 10%);
+  -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+}
+
+.progress-bar .track {
+  -fx-background-color : -bright;
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-padding          : 0.8em;
+}
+.progress-bar .bar {
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-box-border       : -bright;
+  -fx-accent           : -standard;
+}
+.progress-indicator {
+  -fx-progress-color  : -standard;
+}
+.progress-indicator > .determinate-indicator > .indicator {
+  -fx-background-color : -bright;
+  -fx-background-insets: 0, 1, 5 2 1 2;
+  -fx-padding          : 0;
+}
+.progress-indicator .percentage {
+  -fx-fill: rgb(255, 255, 255);
+}
+
