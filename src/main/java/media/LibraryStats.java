@@ -1,9 +1,15 @@
 package media;
 
-import java.util.*;
-import java.util.Map.*;
+import java.util.Collections;
+import java.util.Set;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Comparator;
 
-import javafx.collections.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 /**
  * Summarize the active library.

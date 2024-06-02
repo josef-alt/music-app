@@ -3,8 +3,8 @@ package media;
 import java.io.File;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.*;
-import java.util.logging.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -15,10 +15,8 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
-import org.jaudiotagger.tag.id3.*;
 
 import javafx.scene.image.Image;
-import javafx.scene.media.*;
 
 /**
  * Contains extracted file information for each song to make Library

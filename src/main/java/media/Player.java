@@ -1,15 +1,20 @@
 package media;
 
 import java.io.File;
-import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 import javafx.beans.value.ChangeListener;
-import javafx.collections.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+
 import javafx.util.Duration;
 
 /**
