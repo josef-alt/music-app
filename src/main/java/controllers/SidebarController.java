@@ -7,11 +7,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
 
-import cells.SongCellFactory;
-import cells.AlbumCellFactory;
 import media.Album;
 import media.Playlist;
 import util.ThemeSwitcher;
+import cells.SongCellFactory;
+import cells.AlbumCellFactory;
+import cells.LineWrappedCellFactory;
 
 /**
  * Controls for the tabbed side-bar with the currently playing queue
@@ -70,6 +71,7 @@ public class SidebarController {
 
 		// TODO lots of very simliar code below
 		artists_list.setPrefHeight(400);
+		artists_list.setCellFactory(new LineWrappedCellFactory());
 		artists_list.setItems(model.getPlayer().getStats().getAllArtists());
 		artists_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
 			if (selected != null) {
@@ -95,6 +97,7 @@ public class SidebarController {
 		});
 
 		genres_list.setPrefHeight(400);
+		genres_list.setCellFactory(new LineWrappedCellFactory());
 		genres_list.setItems(model.getPlayer().getStats().getAllGenres());
 		genres_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
 			if (selected != null) {
@@ -107,6 +110,7 @@ public class SidebarController {
 		});
 
 		playlists_list.setPrefHeight(400);
+		playlists_list.setCellFactory(new LineWrappedCellFactory());
 		playlists_list.setItems(model.getPlayer().getAllPlaylists());
 		playlists_list.getSelectionModel().selectedItemProperty().addListener((obs, current, selected) -> {
 			if (selected != null) {
