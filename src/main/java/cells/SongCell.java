@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.text.*;
 import javafx.scene.control.Label;
 
 import media.Song;
@@ -25,6 +26,14 @@ public class SongCell extends ListCell<Song> {
 
 	public SongCell() {
 		loadFXML();
+
+		titleLabel.setMaxWidth(160);
+		titleLabel.setPrefWidth(160);
+		titleLabel.setWrapText(true);
+
+		artistLabel.setMaxWidth(160);
+		artistLabel.setPrefWidth(160);
+		artistLabel.setWrapText(true);
 	}
 
 	private void loadFXML() {

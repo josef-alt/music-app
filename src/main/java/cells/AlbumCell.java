@@ -25,6 +25,14 @@ public class AlbumCell extends ListCell<Album> {
 
 	public AlbumCell() {
 		loadFXML();
+
+		albumNameLabel.setMaxWidth(160);
+		albumNameLabel.setPrefWidth(160);
+		albumNameLabel.setWrapText(true);
+
+		artistLabel.setMaxWidth(160);
+		artistLabel.setPrefWidth(160);
+		artistLabel.setWrapText(true);
 	}
 
 	private void loadFXML() {
