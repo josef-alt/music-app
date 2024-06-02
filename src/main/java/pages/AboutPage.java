@@ -1,13 +1,14 @@
 package pages;
 
-import java.io.*;
+import java.io.IOException;
 
-import controllers.*;
-import javafx.beans.value.*;
-import javafx.fxml.*;
-import javafx.scene.*;
-import javafx.stage.*;
-import util.*;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ChangeListener;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import util.ResourceManager;
 
 /**
  * Handles the about page.

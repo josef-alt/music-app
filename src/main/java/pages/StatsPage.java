@@ -3,16 +3,24 @@ package pages;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.beans.value.*;
-import javafx.collections.*;
-import javafx.fxml.*;
-import javafx.geometry.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
-import media.*;
-import util.*;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ChangeListener;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.Node;
+import javafx.stage.Stage;
+
+import media.Song;
+import media.Player;
+import media.LibraryStats;
+import util.ResourceManager;
 
 /**
  * Just a bit of fun because I like to see a summary of my music collection from
