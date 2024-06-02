@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import media.Player;
-import util.*;
+import util.ThemeSwitcher;
 
 /**
  * Acts as the link between the user and the Player

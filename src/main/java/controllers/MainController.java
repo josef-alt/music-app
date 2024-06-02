@@ -1,17 +1,17 @@
 package controllers;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.*;
-import java.util.*;
-import java.util.prefs.Preferences;
+import java.io.File;
 
-import javafx.fxml.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import media.Player;
-import util.*;
+import util.ThemeSwitcher;
+import util.ResourceManager;
+import util.PreferenceManager;
 
 /**
  * The top level controller for this application

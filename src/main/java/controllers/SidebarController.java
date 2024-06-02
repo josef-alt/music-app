@@ -1,13 +1,16 @@
 package controllers;
 
-import cells.*;
-import javafx.application.*;
-import javafx.beans.value.*;
-import javafx.collections.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
-import media.*;
+
+import cells.SongCellFactory;
+import cells.AlbumCellFactory;
+import media.Album;
+import media.Playlist;
 import util.ThemeSwitcher;
 
 /**

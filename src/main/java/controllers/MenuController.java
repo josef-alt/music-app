@@ -8,9 +8,12 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import media.Player;
-import pages.*;
-import util.*;
+import pages.AboutPage;
+import pages.StatsPage;
+import util.ThemeSwitcher;
+import util.ResourceManager;
 
 /**
  * Handles the menu bar and everything there in

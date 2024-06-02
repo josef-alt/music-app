@@ -1,9 +1,6 @@
 package controllers;
 
-import java.net.*;
-import java.util.*;
-
-import javafx.fxml.*;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
