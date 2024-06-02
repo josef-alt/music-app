@@ -51,7 +51,10 @@ public class PlayerControlsController {
 		pause_button.setGraphic(pause_view);
 		next_button.setGraphic(next_view);
 
-		model.getPlayer().addListener(() -> configureSlider());
+		model.getPlayer().addListener(() -> {
+			togglePause();
+			configureSlider();
+		});
 		prev_button.setOnAction(event -> model.getPlayer().prevSong());
 		pause_button.setOnAction(event -> {
 			model.getPlayer().pause();
