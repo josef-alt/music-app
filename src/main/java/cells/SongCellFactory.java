@@ -3,6 +3,7 @@ package cells;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
+
 import media.Song;
 
 public class SongCellFactory implements Callback<ListView<Song>, ListCell<Song>> {
