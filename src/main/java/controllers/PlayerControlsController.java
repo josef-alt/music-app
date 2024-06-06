@@ -89,6 +89,7 @@ public class PlayerControlsController {
 
 		time_slider.setMax(model.getPlayer().getSong().getDuration());
 		time_slider.setMin(0);
+		time_slider.setValue(0);
 
 		int total_mins = (int) (time_slider.getMax() / 60);
 		int total_secs = (int) (time_slider.getMax() - 60 * total_mins);
