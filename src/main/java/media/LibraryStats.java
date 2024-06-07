@@ -2,6 +2,8 @@ package media;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -13,6 +15,15 @@ import javafx.collections.ObservableMap;
 
 /**
  * Summarize the active library.
+ * 
+ * Use:
+ * 	1. Initialize
+ * 	2. reset()
+ * 	3. addSong()
+ * 	4. repeat Step 3 ad infinitum
+ * 	5. get()
+ * 	6. call getters i.e. getTotalDuration(), getAllAlbums()
+ * 	7. repeat steps 2-6 as needed
  *
  * TODO album info?
  * activity?
@@ -37,13 +48,47 @@ public class LibraryStats {
 		songs_by_genre = FXCollections.observableHashMap();
 		albums_by_artist = FXCollections.observableHashMap();
 
-		clear();
+		clearAtomics();
+	}
+
+	private ConcurrentMap<String, Set> concurrent_songs_by_artist, concurrent_songs_by_genre,
+			concurrent_albums_by_artist;
+	private ConcurrentSkipListSet<String> concurrent_arts, concurrent_gens;
+	private ConcurrentSkipListSet<Album> concurrent_albs;
+
+	private AtomicInteger atomicTotal, atomicDuration;
+	private AtomicReference<Song> atomicLongest, atomicShortest;
+
+	public void get() {
+		clearObservables();
+
+		arts.addAll(concurrent_arts);
+		albs.addAll(concurrent_albs);
+		gens.addAll(concurrent_gens);
+
+		concurrent_songs_by_artist.forEach(songs_by_artist::put);
+		concurrent_songs_by_genre.forEach(songs_by_genre::put);
+		concurrent_albums_by_artist.forEach(albums_by_artist::put);
+
+		shortestSong = atomicShortest.get();
+		longestSong = atomicLongest.get();
+		totalDuration = atomicDuration.get();
+		totalSongs = atomicTotal.get();
 	}
 
 	/**
+	 * Clear all collections and prepare for adding songs
+	 * Should be called before addSong
+	 */
+	public void reset() {
+		clearAtomics();
+		clearObservables();
+	}
+
+	/*
 	 * Clear function to ensure that the observable collections stay connected
 	 */
-	public void clear() {
+	private void clearObservables() {
 		longestSong = null;
 		shortestSong = null;
 		totalSongs = 0;
@@ -58,45 +103,57 @@ public class LibraryStats {
 		gens.clear();
 	}
 
+	private void clearAtomics() {
+		atomicTotal = new AtomicInteger();
+		atomicDuration = new AtomicInteger();
+		atomicShortest = new AtomicReference<>();
+		atomicLongest = new AtomicReference<>();
+
+		concurrent_songs_by_artist = new ConcurrentHashMap<>();
+		concurrent_songs_by_genre = new ConcurrentHashMap<>();
+		concurrent_albums_by_artist = new ConcurrentHashMap<>();
+		concurrent_arts = new ConcurrentSkipListSet<>();
+		concurrent_gens = new ConcurrentSkipListSet<>();
+		concurrent_albs = new ConcurrentSkipListSet<>();
+
+		concurrent_songs_by_artist.clear();
+		concurrent_songs_by_genre.clear();
+		concurrent_albums_by_artist.clear();
+
+		concurrent_albs.clear();
+		concurrent_arts.clear();
+		concurrent_gens.clear();
+	}
+
 	/**
 	 * Add a new song to the current summary.
+	 * Changes not reflected in observables until you call get()
 	 */
 	public void addSong(Song song) {
-		// ensure sorted list of each attribute also contains the unknown variant
-		int index = Collections.binarySearch(gens, song.getGenre());
-		if (index < 0) {
-			gens.add(~index, song.getGenre());
-		}
-		index = Collections.binarySearch(albs, song.getAlbum());
-		if (index < 0) {
-			albs.add(~index, song.getAlbum());
-		}
-		index = Collections.binarySearch(arts, song.getArtist());
-		if (index < 0) {
-			arts.add(~index, song.getArtist());
-		}
+		concurrent_gens.add(song.getGenre());
+		concurrent_albs.add(song.getAlbum());
+		concurrent_arts.add(song.getArtist());
 
-		songs_by_artist.putIfAbsent(song.getArtist(), FXCollections.observableSet());
-		songs_by_artist.get(song.getArtist()).add(song);
+		concurrent_songs_by_artist.putIfAbsent(song.getArtist(), new ConcurrentSkipListSet<>());
+		concurrent_songs_by_artist.get(song.getArtist()).add(song);
 
-		songs_by_genre.putIfAbsent(song.getGenre(), FXCollections.observableSet());
-		songs_by_genre.get(song.getGenre()).add(song);
+		concurrent_songs_by_genre.putIfAbsent(song.getGenre(), new ConcurrentSkipListSet<>());
+		concurrent_songs_by_genre.get(song.getGenre()).add(song);
 
-		albums_by_artist.putIfAbsent(song.getArtist(), FXCollections.observableSet());
-		albums_by_artist.get(song.getArtist()).add(song.getAlbum());
+		concurrent_albums_by_artist.putIfAbsent(song.getArtist(), new ConcurrentSkipListSet<>());
+		concurrent_albums_by_artist.get(song.getArtist()).add(song.getAlbum());
 
 		// compute extrema
-		if (shortestSong == null || song.getDuration() < shortestSong.getDuration()) {
-			shortestSong = song;
+		if (atomicShortest.get() == null || song.getDuration() < atomicShortest.get().getDuration()) {
+			atomicShortest.set(song);
 		}
-
-		if (longestSong == null || song.getDuration() > longestSong.getDuration()) {
-			longestSong = song;
+		if (atomicLongest.get() == null || song.getDuration() < atomicLongest.get().getDuration()) {
+			atomicLongest.set(song);
 		}
 
 		// TODO assume that a song is never added multiple times?
-		totalSongs++;
-		totalDuration += song.getDuration();
+		atomicTotal.incrementAndGet();
+		atomicDuration.addAndGet(song.getDuration());
 	}
 
 	public int getTotalSongs() {

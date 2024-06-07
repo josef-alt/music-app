@@ -16,7 +16,7 @@ import javafx.collections.ObservableList;
 /**
  * Contains everything necessary for managing the music library.
  * 
- * TODO playlists, filtering, genre/artist/album/etc
+ * TODO playlists, filtering
  */
 public class Library {
 	private Song[] files;
@@ -55,17 +55,15 @@ public class Library {
 	 * Filters out unsupported types
 	 */
 	private void loadFiles() throws IOException {
-		stats.clear();// = new LibraryStats();
+		stats.reset();// = new LibraryStats();
 		ArrayList<Song> songs = new ArrayList<>();
 
 		if (Files.isDirectory(directory)) {
-			for (Path path : Files.newDirectoryStream(directory)) {
-				if (matcher.matches(path)) {
-					Song newSong = new Song(path.toFile());
-					stats.addSong(newSong);
-					songs.add(newSong);
-				}
-			}
+			Files.list(directory).parallel().filter(matcher::matches).forEach(path -> {
+				Song newSong = new Song(path.toFile());
+				stats.addSong(newSong);
+				songs.add(newSong);
+			});
 		} else if (Files.isRegularFile(directory)) {
 			if (matcher.matches(directory)) {
 				songs.add(new Song(directory.toFile()));
@@ -73,6 +71,7 @@ public class Library {
 			}
 		}
 		this.files = songs.toArray(Song[]::new);
+		stats.get();
 
 		// TODO playlist support
 		playlists.clear();
