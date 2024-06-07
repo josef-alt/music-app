@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.*;
 import java.util.logging.Level;
 
 import org.jaudiotagger.audio.AudioFile;
@@ -22,7 +23,7 @@ import javafx.scene.image.Image;
  * Contains extracted file information for each song to make Library
  * operations easier.
  */
-public class Song {
+public class Song implements Comparable<Song> {
 	private String title;
 	private Album album;
 	private String artist;
@@ -153,5 +154,20 @@ public class Song {
 
 	public String toString() {
 		return String.format("%s", title);
+	}
+
+	@Override
+	public int compareTo(Song o) {
+		return Comparator.comparing(Song::getTitle).thenComparing(Song::getAlbum)
+				.thenComparing(Song::getArtist, (a, b) -> {
+					if (a.equals("Unknown Artist")) {
+						return 1;
+					}
+					if (b.equals("Unknown Artist")) {
+						return -1;
+					}
+					return a.compareTo(b);
+				})
+				.compare(this, o);
 	}
 }
