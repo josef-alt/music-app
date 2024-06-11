@@ -24,14 +24,14 @@ public class PreferenceManager {
 	}
 
 	public static String getTheme() {
-		return userSettings.get("user-theme", DEFAULT);
+		return userSettings.get("user-theme", "default");
 	}
 
 	public static void setShuffle(boolean value) {
 		userSettings.put("shuffle", Boolean.toString(value));
 	}
 
-	public static String getShuffled() {
-		return userSettings.get("shuffle", DEFAULT);
+	public static boolean getShuffled() {
+		return Boolean.parseBoolean(userSettings.get("shuffle", DEFAULT));
 	}
 }

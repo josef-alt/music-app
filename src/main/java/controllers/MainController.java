@@ -35,8 +35,7 @@ public class MainController {
 		currentStage.setTitle("Music App");
 		currentStage.getIcons().add(ResourceManager.getImage("/img/large/play.png"));
 
-		boolean shuffle = Boolean.parseBoolean(PreferenceManager.getShuffled());
-		player = new Player(shuffle);
+		player = new Player(PreferenceManager.getShuffled());
 		String currentDirectory = PreferenceManager.getDirectory();
 		if (!currentDirectory.equals(PreferenceManager.DEFAULT)) {
 			player.setDirectory(new File(currentDirectory));
