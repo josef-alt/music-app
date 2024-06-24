@@ -147,7 +147,7 @@ public class LibraryStats {
 		if (atomicShortest.get() == null || song.getDuration() < atomicShortest.get().getDuration()) {
 			atomicShortest.set(song);
 		}
-		if (atomicLongest.get() == null || song.getDuration() < atomicLongest.get().getDuration()) {
+		if (atomicLongest.get() == null || song.getDuration() > atomicLongest.get().getDuration()) {
 			atomicLongest.set(song);
 		}
 
