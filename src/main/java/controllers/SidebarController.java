@@ -2,9 +2,10 @@ package controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
 import media.Album;
@@ -49,9 +50,13 @@ public class SidebarController {
 		switcher.addView(playlist_icon, "playlist", 20);
 
 		artists_tab.setGraphic(artist_icon);
+		artists_tab.setTooltip(new Tooltip("Artists"));
 		albums_tab.setGraphic(album_icon);
+		albums_tab.setTooltip(new Tooltip("Albums"));
 		genres_tab.setGraphic(genre_icon);
+		genres_tab.setTooltip(new Tooltip("Genres"));
 		playlists_tab.setGraphic(playlist_icon);
+		playlists_tab.setTooltip(new Tooltip("Playlists"));
 
 		// link user selections to player
 		active_queue.getSelectionModel().selectedIndexProperty().addListener((obs, old, sel) -> {
