@@ -31,6 +31,7 @@ public class Song implements Comparable<Song> {
 	private byte[] cover;
 	private File source;
 	private int duration;
+	private boolean successfullyRead;
 
 	private static final Image DEFAULT_ALBUM_COVER = new Image(Song.class.getResourceAsStream("/img/cd.png"));;
 	static {
@@ -44,6 +45,7 @@ public class Song implements Comparable<Song> {
 
 	public Song(File source) {
 		this.source = source;
+		successfullyRead = true;
 		loadTags();
 	}
 
@@ -86,12 +88,17 @@ public class Song implements Comparable<Song> {
 		catch (IOException | CannotReadException e) {
 			System.err.println("Failed to read file");
 			e.printStackTrace();
+			successfullyRead = false;
 		} catch (TagException | ReadOnlyFileException e) {
 			System.err.println("Failed to read tags");
 			e.printStackTrace();
 		} catch (InvalidAudioFrameException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean readSuccessfully() {
+		return successfullyRead;
 	}
 
 	public boolean hasTitle() {
