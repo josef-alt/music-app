@@ -171,7 +171,7 @@ public class Player {
 	 * Move to next song sequentially in library or cycle back to beginning
 	 */
 	public void nextSong() {
-		if (libraryLength == 0) {
+		if (nowPlaying.size() == 0) {
 			return;
 		}
 		songIndex = (songIndex + 1) % nowPlaying.size();
@@ -185,7 +185,7 @@ public class Player {
 	 * Move to sequentially prior song, looping back around at beginning.
 	 */
 	public void prevSong() {
-		if (libraryLength == 0) {
+		if (nowPlaying.size() == 0) {
 			return;
 		}
 		songIndex = (songIndex - 1 + libraryLength) % nowPlaying.size();
