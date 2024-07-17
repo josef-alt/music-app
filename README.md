@@ -2,7 +2,7 @@
 A simple Windows desktop music player based on old mp3 players. \
 \
 Preview:\
-![ui2](https://github.com/josef-alt/music-app/assets/30385688/b53db76e-7178-413e-9d5e-d08b52ae73bd)
+![ui3](https://github.com/user-attachments/assets/2e378f12-cb6a-4d1a-a2fe-b77f685df1a3)
 ![stats](https://github.com/josef-alt/music-app/assets/30385688/2a3e8fec-f62a-4795-9425-2f1fc8d0bff7)
 
 # Why?
