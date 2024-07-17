@@ -69,4 +69,38 @@ public class ResourceManager {
 
 		return themes.stream().toArray(String[]::new);
 	}
+
+	/**
+	 * List of all custom playlists found
+	 */
+	public static String[] loadPlaylists() {
+		ArrayList<String> playlists = new ArrayList<>();
+		try {
+			// loading from the classpath
+			InputStream inputStream = ResourceManager.class.getResourceAsStream("/playlists");
+			if (inputStream != null) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+				for (String playlist = reader.readLine(); playlist != null; playlist = reader.readLine()) {
+					playlists.add(playlist);
+				}
+			}
+
+			// if that fails, load from the local file system
+			if (playlists.isEmpty()) {
+				File playlistFolder = new File("playlists/");
+				File[] folders = playlistFolder.listFiles();
+				if (folders != null) {
+					for (File playlist : folders) {
+						playlists.add(playlist.getName());
+					}
+				}
+			}
+		} catch (IOException e) {
+			// returning an empty array will be fine
+			// just won't be able to switch theme later
+			System.err.println("Error accessing playlists: " + e.getMessage());
+		}
+
+		return playlists.stream().toArray(String[]::new);
+	}
 }

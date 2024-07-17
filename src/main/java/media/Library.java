@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import util.ResourceManager;
+
 /**
  * Contains everything necessary for managing the music library.
  * 
@@ -76,6 +78,11 @@ public class Library {
 		// TODO playlist support
 		playlists.clear();
 		playlists.add(new Playlist("All Songs", songs));
+
+		String[] playlistFiles = ResourceManager.loadPlaylists();
+		System.out.println(Arrays.toString(playlistFiles));
+		for (String pl : playlistFiles)
+			playlists.add(Playlist.fromM3u(pl, this));
 	}
 
 	public int getNumberOfTracks() {
