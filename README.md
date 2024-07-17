@@ -12,8 +12,8 @@ Maintaining a decent music library on streaming services is impossible because n
 * Multiple themes
 * Remembers active theme and directory
 * Fun stats about the loaded library
+* Importing playlists in m3u format
 * Supports: mp3, mp4, m4a, aif, aiff, wav
 # To do
 1. better themes
-2. playlists
-3. filtering
+2. filtering
